@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+import ServiceCard from './ui/ServiceCard.astro';
+
+const services = [
+  {
+    title: 'Sprache',
+    description: 'Von ersten Wörtern bis zum aktiven Sprachgebrauch – ich begleite Ihr Kind individuell bei der Entwicklung seiner Sprachkompetenz.',
+    image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=772&q=80',
+    href: '/leistungen/sprache'
+  },
+  {
+    title: 'Sprechen',
+    description: 'Klare Aussprache schafft Selbstvertrauen. Mit spielerischen Übungen unterstütze ich Ihr Kind bei der korrekten Artikulation.',
+    image: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=772&q=80',
+    href: '/leistungen/sprechen'
+  },
+  {
+    title: 'Stimme',
+    description: 'Eine gesunde Stimme ist das Fundament guter Kommunikation. Gemeinsam entwickeln wir einen natürlichen Stimmeinsatz.',
+    image: 'https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?auto=format&fit=crop&w=772&q=80',
+    href: '/leistungen/stimme'
+  }
+];
+---
+
+<section 
+  id="services" 
+  class="py-16 md:py-24 bg-white"
+  x-data="{ 
+    isVisible: false,
+    init() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            this.isVisible = true;
+          }
+        });
+      }, {
+        threshold: 0.2
+      });
+
+      observer.observe(this.$refs.services);
+    }
+  }">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+        Therapeutische Schwerpunkte
+      </h2>
+      <p class="text-lg text-dark/70">
+        Von ersten Wörtern bis zum aktiven Sprachgebrauch – ich begleite Ihr Kind individuell bei der Entwicklung seiner Sprachkompetenz.
+      </p>
+    </div>
+
+    <div 
+      x-ref="services"
+      class="grid md:grid-cols-3 gap-8">
+      {services.map((service, index) => (
+        <div 
+          class="transition-all duration-700 ease-out"
+          x-bind:class={`isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'`}
+          style={`transition-delay: ${index * 200}ms`}
+        >
+          <ServiceCard {...service} />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,37 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import '@fontsource-variable/quicksand';
+import '@fontsource/plus-jakarta-sans';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { 
+  title,
+  description = "Professionelle Logopädie in Baden. Individuelle Sprachtherapie für Kinder und Erwachsene mit Expertise und Herz."
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title} | Sprach Eck | Logopädie Baden</title>
+    <ViewTransitions />
+  </head>
+  <body class="min-h-screen flex flex-col font-secondary">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,97 @@
+---
+const steps = [
+  {
+    title: 'Erstgespräch',
+    description: 'Kennenlernen und gemeinsames Besprechen Ihrer Anliegen in vertrauensvoller Atmosphäre'
+  },
+  {
+    title: 'Diagnostik',
+    description: 'Spielerische Bestandsaufnahme, bei der sich Ihr Kind entspannt eingewöhnen kann'
+  },
+  {
+    title: 'Therapieplan',
+    description: 'Entwicklung eines individuellen Therapieplans mit klaren, erreichbaren Zielen'
+  },
+  {
+    title: 'Begleitung',
+    description: 'Regelmäßige Therapieeinheiten mit kontinuierlicher Anpassung an die Entwicklung'
+  }
+];
+---
+
+<section 
+  id="process"
+  class="py-16 md:py-24 bg-white"
+  x-data="{ 
+    activeSteps: new Set(),
+    init() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const stepIndex = parseInt(entry.target.dataset.step);
+          if (entry.isIntersecting) {
+            this.activeSteps.add(stepIndex);
+          } else {
+            if (entry.boundingClientRect.top > 0) {
+              this.activeSteps.delete(stepIndex);
+            }
+          }
+        });
+      }, {
+        threshold: 0.5,
+        rootMargin: '-10% 0px -10% 0px'
+      });
+
+      document.querySelectorAll('[data-step]').forEach(step => {
+        observer.observe(step);
+      });
+    }
+  }">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+        So arbeiten wir zusammen
+      </h2>
+      <p class="text-lg text-dark/70 font-secondary">
+        Jede therapeutische Begleitung beginnt mit dem Aufbau einer vertrauensvollen Basis. In entspannter Atmosphäre entwickeln wir gemeinsam den individuellen Weg für Ihr Kind.
+      </p>
+    </div>
+
+    <div class="relative max-w-3xl mx-auto">
+      <!-- Timeline Line -->
+      <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-100">
+        <div 
+          class="absolute top-0 left-0 w-full bg-accent transition-all duration-1000 ease-in-out"
+          style="height: 0%;"
+          x-ref="progress"
+          x-effect="$refs.progress.style.height = (Math.max(...Array.from(activeSteps)) + 1) * 25 + '%'">
+        </div>
+      </div>
+
+      <!-- Timeline Steps -->
+      <div class="space-y-16">
+        {steps.map((step, i) => (
+          <div 
+            class="relative pl-24 transition-all duration-700 ease-out"
+            data-step={i}
+            x-bind:class={`activeSteps.has(${i}) ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'`}
+          >
+            <!-- Timeline Dot -->
+            <div 
+              class="absolute left-7 top-1.5 w-2 h-2 rounded-full border-2 transition-colors duration-700"
+              x-bind:class={`activeSteps.has(${i}) ? 'border-accent bg-accent' : 'border-gray-300 bg-white'`}>
+            </div>
+
+            <div class="transition-all duration-700">
+              <h3 class="text-xl font-semibold font-primary text-dark mb-2">
+                {step.title}
+              </h3>
+              <p class="text-dark/70 leading-relaxed font-secondary">
+                {step.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

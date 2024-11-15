@@ -1,0 +1,57 @@
+---
+import { Image } from 'astro:assets';
+import FeatureCard from './ui/FeatureCard.astro';
+
+const features = [
+  {
+    title: 'Spezialisierung Autismus & Stottern',
+    description: 'Expertise in der Begleitung von Menschen mit Autismus und Stottersymptomatik.',
+    icon: 'brain'
+  },
+  {
+    title: 'Fokus auf frühe Sprachentwicklung',
+    description: 'Frühzeitige Förderung für optimale Entwicklungschancen.',
+    icon: 'sprout'
+  },
+  {
+    title: 'Ganzheitlicher Therapieansatz',
+    description: 'Behandlung unter Berücksichtigung aller Lebensbereiche.',
+    icon: 'circle'
+  }
+];
+---
+
+<section id="about" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+      <!-- Image Column -->
+      <div class="relative max-w-md mx-auto md:mx-0">
+        <Image
+          src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&h=600&q=100"
+          alt="Portrait"
+          width={400}
+          height={600}
+          class="rounded-2xl w-full object-cover shadow-lg"
+          format="webp"
+          quality={100}
+        />
+      </div>
+
+      <!-- Content Column -->
+      <div class="space-y-8">
+        <div class="space-y-4">
+          <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark">
+            Hi, ich bin Viki!
+          </h2>
+          <p class="text-lg text-dark/70 leading-relaxed">
+            In meiner logopädischen Praxis verbinde ich fachliche Expertise mit einem herzlichen, individuellen Ansatz. Ich glaube daran, dass jedes Kind seinen eigenen Weg zur Sprache findet – und begleite Familien dabei, diesen Weg mit Freude zu gehen.
+          </p>
+        </div>
+
+        <div class="grid gap-6">
+          {features.map((feature) => <FeatureCard {...feature} />)}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

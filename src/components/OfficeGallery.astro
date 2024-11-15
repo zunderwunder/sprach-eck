@@ -1,0 +1,96 @@
+---
+import { Image } from 'astro:assets';
+
+const officeImages = [
+  {
+    src: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80',
+    alt: 'Helle, moderne Praxisräume mit historischen Elementen'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
+    alt: 'Gemütlicher Therapieraum mit natürlichem Licht'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1531835551805-16d864c8d311?auto=format&fit=crop&w=1200&q=80',
+    alt: 'Historische Gebäudefassade mit Bäumen'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1449247709967-d4461a6a6103?auto=format&fit=crop&w=1200&q=80',
+    alt: 'Einladender Eingangsbereich mit Altbau-Charme'
+  }
+];
+
+// Triple the images to ensure smooth infinite scroll
+const allImages = [...officeImages, ...officeImages, ...officeImages];
+---
+
+<section class="py-16 md:py-24 bg-light overflow-hidden">
+  <div class="gallery-container">
+    <div class="gallery-track">
+      {allImages.map((image) => (
+        <div class="gallery-item">
+          <Image
+            src={image.src}
+            alt={image.alt}
+            width={1200}
+            height={900}
+            class="w-full h-full object-cover rounded-xl"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.gallery-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 1rem 0;
+}
+
+.gallery-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  animation: scroll 60s linear infinite;
+  /* Add will-change to optimize performance */
+  will-change: transform;
+}
+
+.gallery-track:hover {
+  animation-play-state: paused;
+}
+
+.gallery-item {
+  width: min(500px, 80vw);
+  height: min(375px, 60vw);
+  flex-shrink: 0;
+}
+
+@keyframes scroll {
+  to {
+    /* Use translateX instead of transform for better performance */
+    transform: translateX(calc(-33.333% - 2rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-track {
+    animation: none;
+  }
+}
+
+/* Add specific mobile optimization */
+@media (max-width: 640px) {
+  .gallery-track {
+    animation-duration: 45s;
+  }
+  
+  .gallery-item {
+    width: 85vw;
+    height: 64vw;
+  }
+}
+</style>

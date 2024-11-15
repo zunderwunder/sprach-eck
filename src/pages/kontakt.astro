@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/ContactForm.astro';
+---
+
+<Layout title="Kontakt | Sprach Eck">
+  <section class="container mx-auto p-6">
+    <h1 class="font-quicksand text-4xl font-bold mb-6">Kontakt</h1>
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <div>
+        <h2 class="font-quicksand text-2xl font-semibold mb-4">So erreichen Sie mich</h2>
+        <div class="space-y-2 font-['Avenir_Light']">
+          <p>📍 Sprach Eck</p>
+          <p>Kaiser Franz Joseph-Ring 36</p>
+          <p>2500 Baden</p>
+          <p class="mt-4">📞 +43 660 9027092</p>
+          <p>📧 kontakt@sprach-eck.at</p>
+        </div>
+        
+        <h2 class="font-quicksand text-2xl font-semibold mb-4 mt-8">Öffnungszeiten</h2>
+        <div class="space-y-2 font-['Avenir_Light']">
+          <p>Montag - Donnerstag</p>
+          <p>Nach Vereinbarung</p>
+        </div>
+      </div>
+      
+      <div>
+        <ContactForm />
+      </div>
+    </div>
+
+    <!-- OpenStreetMap Integration -->
+    <div class="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+      <iframe 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        scrolling="no" 
+        marginheight="0" 
+        marginwidth="0" 
+        src="https://www.openstreetmap.org/export/embed.html?bbox=16.228399%2C47.996897%2C16.230399%2C47.998897&amp;layer=mapnik&amp;marker=47.997897%2C16.229399"
+        style="border: none; filter: hue-rotate(160deg) saturate(0.8);"
+      ></iframe>
+    </div>
+    <div class="mt-2 text-right">
+      <a 
+        href="https://www.openstreetmap.org/?mlat=47.997897&mlon=16.229399#map=19/47.997897/16.229399" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="text-[#006B67] hover:text-[#005451] font-['Avenir_Light'] text-sm"
+      >
+        Größere Karte anzeigen
+      </a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  iframe {
+    filter: sepia(100%) hue-rotate(160deg) saturate(0.6);
+  }
+</style> 
