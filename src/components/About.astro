@@ -24,17 +24,28 @@ const features = [
 <section id="about" class="py-20 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-      <!-- Image Column -->
+      <!-- Image Column with Frame Effect -->
       <div class="relative max-w-md mx-auto md:mx-0">
-        <Image
-          src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&h=600&q=100"
-          alt="Portrait"
-          width={400}
-          height={600}
-          class="rounded-2xl w-full object-cover shadow-lg"
-          format="webp"
-          quality={100}
-        />
+        <div class="relative">
+          <div class="rounded-2xl overflow-hidden shadow-lg">
+            <Image
+              src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&h=600&q=100"
+              alt="Portrait"
+              width={400}
+              height={600}
+              class="w-full h-full object-cover object-center"
+              format="webp"
+              quality={100}
+              x-data
+              x-intersect:enter="$el.style.opacity = 1; $el.style.transform = 'scale(1)'"
+              x-intersect:leave="$el.style.opacity = 0; $el.style.transform = 'scale(0.95)'"
+              style="opacity: 0; transform: scale(0.95); transition: all 0.5s ease-out"
+            />
+          </div>
+          <!-- Decorative Elements -->
+          <div class="absolute -z-10 -bottom-4 -right-4 w-full h-full rounded-2xl bg-[#f39256]/10"></div>
+          <div class="absolute -z-20 -top-4 -left-4 w-full h-full rounded-2xl bg-[#E6EFEF]/30"></div>
+        </div>
       </div>
 
       <!-- Content Column -->
