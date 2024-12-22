@@ -11,7 +11,7 @@ export default {
       },
       fontFamily: {
         primary: ['Quicksand Variable', 'sans-serif'],
-        secondary: ['Avenir Light', 'Plus Jakarta Sans', 'sans-serif'],
+        secondary: ['Avenir Light', 'sans-serif'],
       },
     },
   },

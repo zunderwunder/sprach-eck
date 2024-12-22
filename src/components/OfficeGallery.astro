@@ -19,78 +19,81 @@ const officeImages = [
     alt: 'Einladender Eingangsbereich mit Altbau-Charme'
   }
 ];
-
-// Triple the images to ensure smooth infinite scroll
-const allImages = [...officeImages, ...officeImages, ...officeImages];
 ---
 
-<section class="py-16 md:py-24 bg-light overflow-hidden">
-  <div class="gallery-container">
-    <div class="gallery-track">
-      {allImages.map((image) => (
-        <div class="gallery-item">
-          <Image
-            src={image.src}
-            alt={image.alt}
-            width={1200}
-            height={900}
-            class="w-full h-full object-cover rounded-xl"
-          />
-        </div>
-      ))}
-    </div>
+<div class="gallery-container">
+  <div class="gallery-grid">
+    {officeImages.map((image, index) => (
+      <div class={`gallery-item item-${index + 1}`}>
+        <img
+          src={image.src}
+          alt={image.alt}
+          class="w-full h-full object-cover rounded-lg"
+          width="600"
+          height="600"
+        />
+      </div>
+    ))}
   </div>
-</section>
+</div>
 
 <style>
-.gallery-container {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  padding: 1rem 0;
-}
-
-.gallery-track {
-  display: flex;
-  gap: 2rem;
-  width: max-content;
-  animation: scroll 60s linear infinite;
-  /* Add will-change to optimize performance */
-  will-change: transform;
-}
-
-.gallery-track:hover {
-  animation-play-state: paused;
-}
-
-.gallery-item {
-  width: min(500px, 80vw);
-  height: min(375px, 60vw);
-  flex-shrink: 0;
-}
-
-@keyframes scroll {
-  to {
-    /* Use translateX instead of transform for better performance */
-    transform: translateX(calc(-33.333% - 2rem));
+  .gallery-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .gallery-track {
-    animation: none;
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    aspect-ratio: 1;
   }
-}
 
-/* Add specific mobile optimization */
-@media (max-width: 640px) {
-  .gallery-track {
-    animation-duration: 45s;
-  }
-  
   .gallery-item {
-    width: 85vw;
-    height: 64vw;
+    position: relative;
+    aspect-ratio: 1;
+    opacity: 0;
   }
-}
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+
+  .item-1 {
+    animation: fadeLoop 8s infinite 0s;
+  }
+  .item-2 {
+    animation: fadeLoop 8s infinite 2s;
+  }
+  .item-3 {
+    animation: fadeLoop 8s infinite 4s;
+  }
+  .item-4 {
+    animation: fadeLoop 8s infinite 6s;
+  }
+
+  @keyframes fadeLoop {
+    0%, 100% { opacity: 0; }
+    3%, 22% { opacity: 1; }
+    25% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-item {
+      animation: none;
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .gallery-grid {
+      gap: 0.5rem;
+    }
+  }
 </style>

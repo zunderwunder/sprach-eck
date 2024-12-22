@@ -1,246 +1,248 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import FeatureCard from '../components/ui/FeatureCard.astro';
+import Icon from '../components/ui/Icon.astro';
 import PrimaryButton from '../components/ui/PrimaryButton.astro';
-import SecondaryButton from '../components/ui/SecondaryButton.astro';
 
 const expertise = [
   {
-    year: 2015,
-    title: "FH Campus Wien",
-    subtitle: "Bachelor Logopädie",
-    details: "Fundierte Ausbildung in allen Bereichen der Sprachtherapie",
-    highlight: true
+    title: 'Kindersprache & Entwicklung',
+    description: 'Mein Herz schlägt für die frühe Sprachentwicklung. Mit viel Einfühlungsvermögen begleite ich Kinder auf ihrem individuellen Weg.',
+    icon: 'sprout'
   },
   {
-    year: 2016,
-    title: "Berufseinstieg",
-    subtitle: "Erste Praxiserfahrungen",
-    details: "Intensive Arbeit mit verschiedenen Störungsbildern"
+    title: 'Ganzheitlicher Ansatz',
+    description: 'Durch meine Erfahrung in der Praxis Sprecherei und zahlreiche Fortbildungen biete ich eine umfassende therapeutische Betreuung.',
+    icon: 'circle'
   },
   {
-    year: 2018,
-    title: "Spezialisierung Autismus",
-    subtitle: "Zertifizierte Weiterbildung",
-    details: "Fokus auf komplexe Entwicklungsstörungen",
-    highlight: true
+    title: 'Vorträge & Beratung',
+    description: 'Regelmäßige Infoabende und Vorträge im Kindergarten-Setting sowie am Biofeedback Kongress zeigen mein Engagement für Aufklärung.',
+    icon: 'star'
+  }
+];
+
+const education = [
+  {
+    period: '2017 - 2020',
+    title: 'Bachelor-Studium Logopädie',
+    description: 'FH Wiener Neustadt'
   },
   {
-    year: 2020,
-    title: "Eigene Praxis",
-    subtitle: "Sprach Eck Baden",
-    details: "Gründung der eigenen logopädischen Praxis",
-    highlight: true
+    period: '2020 - 2022',
+    title: 'Praxis Sprecherei',
+    description: 'Intensive Expertise-Entwicklung im Team und Spezialisierung auf Kindersprache'
+  },
+  {
+    period: 'seit März 2022',
+    title: 'Sprach Eck',
+    description: 'Eigene logopädische Praxis in Baden'
   }
 ];
 
 const specializations = [
+  'Interaktionelle Therapie bei Sprachentwicklungsstörungen',
+  'Komm!ASS® für Autismus Spektrum Störungen',
+  'Myofunktionelle Therapie',
+  'Selektiver Mutismus',
+  'Neurofunktionstherapie (NF!T®)'
+];
+
+const milestones = [
   {
-    area: "Autismus",
-    level: 95,
-    icon: "puzzle-piece",
-    description: "Spezialisiert auf Autismus-Spektrum-Störungen"
+    title: 'Erste Schritte zur Logopädie',
+    description: 'Während meiner Schulzeit am humanistischen Gymnasium entdeckte ich durch 5-jährige Theatererfahrung meine Leidenschaft für Sprache. Als Rettungssanitäterin entwickelte ich zusätzlich großes medizinisches Interesse.',
+    year: '2013 - 2017'
   },
   {
-    area: "Stottern",
-    level: 90,
-    icon: "wave-square",
-    description: "Therapie von Redeflussstörungen"
+    title: 'Bachelor-Studium Logopädie',
+    description: 'Fundierte Ausbildung an der FH Wiener Neustadt mit Fokus auf evidenzbasierte Therapieansätze und praktische Erfahrung.',
+    year: '2017 - 2020'
   },
   {
-    area: "Kindersprache",
-    level: 98,
-    icon: "child",
-    description: "Entwicklungsverzögerungen & -störungen"
+    title: 'Praxis Sprecherei',
+    description: 'Intensive Expertise-Entwicklung im Team, Spezialisierung auf Kindersprache und zahlreiche Fortbildungen in interaktioneller Therapie.',
+    year: '2020 - 2022'
+  },
+  {
+    title: 'Gründung Sprach Eck',
+    description: 'Start meiner eigenen logopädischen Praxis in Baden. Regelmäßige Vorträge und Infoabende für Eltern und Fachpersonal.',
+    year: 'seit März 2022'
   }
 ];
 ---
 
-<Layout title="Über Mich | Sprach Eck">
-    <!-- Intro Section -->
-    <section class="pt-20 pb-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex flex-col md:flex-row items-center gap-12">
-                <!-- Image Container -->
-                <div class="w-full md:w-1/3 relative">
-                    <div class="aspect-square rounded-2xl overflow-hidden shadow-lg">
-                        <img 
-                            src="https://images.unsplash.com/photo-1544717302-de2939b7ef71?auto=format&fit=crop&w=600&h=600&q=100"
-                            alt="Logopädin im Sprach Eck Baden" 
-                            class="w-full h-full object-cover object-center"
-                            x-data
-                            x-intersect:enter="$el.style.opacity = 1; $el.style.transform = 'scale(1)'"
-                            x-intersect:leave="$el.style.opacity = 0; $el.style.transform = 'scale(0.95)'"
-                            style="opacity: 0; transform: scale(0.95); transition: all 0.5s ease-out"
-                        />
-                    </div>
-                    <div class="absolute -z-10 -bottom-4 -right-4 w-full h-full rounded-2xl bg-[#f39256]/10"></div>
-                    <div class="absolute -z-20 -top-4 -left-4 w-full h-full rounded-2xl bg-[#E6EFEF]/30"></div>
-                </div>
-
-                <!-- Text Content -->
-                <div class="w-full md:w-2/3">
-                    <h1 class="text-4xl font-bold mb-6 font-primary text-[#2D3748]">Über mich</h1>
-                    <div class="prose max-w-none">
-                        <p class="font-['Avenir_Light'] text-lg mb-4 text-[#4A5568]">
-                            Herzlich willkommen im Sprach Eck Baden! Als diplomierte Logopädin biete ich professionelle logopädische Therapie für Kinder, Jugendliche und Erwachsene an.
-                        </p>
-                        <p class="font-['Avenir_Light'] text-lg mb-8 text-[#4A5568]">
-                            In meiner Praxis steht der Mensch im Mittelpunkt. Jede Therapie wird individuell auf die Bedürfnisse meiner Patienten abgestimmt.
-                        </p>
-                    </div>
-                </div>
-            </div>
+<Layout title="Über mich - Sprach Eck">
+  <main class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <!-- Hero Section mit Fade-In Animation -->
+      <div class="grid md:grid-cols-2 gap-12 items-start"
+        x-data="{ show: false }"
+        x-intersect="show = true"
+        x-bind:class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'"
+        class="transition-all duration-1000">
+        <div class="relative max-w-md mx-auto md:mx-0">
+          <div class="rounded-2xl overflow-hidden">
+            <img
+              src="/images/Viki-Portrait.webp"
+              alt="Portrait von Viki"
+              class="w-full h-full object-cover object-center"
+              width="400"
+              height="600"
+            />
+          </div>
         </div>
-    </section>
 
-    <!-- Timeline Section -->
-<section class="py-16 bg-gradient-to-br from-white via-[#E6EFEF]/30 to-[#f39256]/10">
-    <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-16 font-primary text-[#2D3748]">Mein Werdegang</h2>
-        
-        <div class="relative max-w-5xl mx-auto" x-data="{ /* ... existing x-data ... */ }">
-            
-            <!-- Center Timeline Line -->
-            <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-100 -translate-x-1/2">
-                <div 
-                    class="absolute top-0 left-0 w-full bg-[#f39256] transition-all duration-1000 ease-in-out"
-                    style="height: 0%;"
-                    x-ref="progress"
-                    x-effect="$refs.progress.style.height = (Math.max(...Array.from(activeSteps)) + 1) * 25 + '%'">
-                </div>
+        <div class="space-y-6">
+          <h1 class="text-4xl font-bold font-primary text-dark">
+            Hi, ich bin Viki!
+          </h1>
+          <div class="space-y-4 text-lg text-dark/70">
+            <p>
+              Meine Begeisterung für Sprache entdeckte ich bereits während meiner Schulzeit am humanistischen Gymnasium, wo ich 5 Jahre lang Theatererfahrung sammeln durfte.
+            </p>
+            <p>
+              Die Kombination aus meinem medizinischen Interesse als Rettungssanitäterin und der Freude an der Begleitung von Familien durch mehrjährige Kinderbetreuung führte mich zur Logopädie.
+            </p>
+            <p>
+              Heute begleite ich Kinder, Jugendliche und Erwachsene mit verschiedenen logopädischen Anliegen und nehme mir gerne Zeit, zu allen Themen transparent zu beraten.
+            </p>
+          </div>
+          <div class="pt-4">
+            <PrimaryButton href="/kontakt">
+              Kontakt aufnehmen
+            </PrimaryButton>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expertise Cards mit gestaffeltem Fade-In -->
+      <div class="mt-24"
+        x-data="{ show: false }"
+        x-intersect="show = true">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+            Meine Expertise
+          </h2>
+          <p class="text-lg text-dark/70 font-secondary">
+            Spezialisiert auf Kindersprachentwicklung und ganzheitliche Betreuung von Familien.
+          </p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          {expertise.map((item, index) => (
+            <div
+              x-bind:class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'"
+              class="transition-all duration-700"
+              style={`transition-delay: ${index * 200}ms`}>
+              <FeatureCard {...item} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Milestones Timeline Section -->
+      <section class="py-16 md:py-24 bg-white"
+        x-data="{ 
+          activeSteps: new Set(),
+          init() {
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                const stepIndex = parseInt(entry.target.dataset.step);
+                if (entry.isIntersecting) {
+                  this.activeSteps.add(stepIndex);
+                } else {
+                  if (entry.boundingClientRect.top > 0) {
+                    this.activeSteps.delete(stepIndex);
+                  }
+                }
+              });
+            }, {
+              threshold: 0.5,
+              rootMargin: '-10% 0px -10% 0px'
+            });
+
+            document.querySelectorAll('[data-step]').forEach(step => {
+              observer.observe(step);
+            });
+          }
+        }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+          <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+              Mein Weg zur Logopädie
+            </h2>
+            <p class="text-lg text-dark/70 font-secondary">
+              Eine Reise geprägt von Leidenschaft für Sprache, medizinischem Interesse und dem Wunsch, Menschen auf ihrem Weg zu begleiten.
+            </p>
+          </div>
+
+          <div class="relative max-w-3xl mx-auto">
+            <!-- Timeline Line -->
+            <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-100">
+              <div 
+                class="absolute top-0 left-0 w-full bg-accent transition-all duration-1000 ease-in-out"
+                style="height: 0%;"
+                x-ref="progress"
+                x-effect="$refs.progress.style.height = (Math.max(...Array.from(activeSteps)) + 1) * 25 + '%'">
+              </div>
             </div>
 
             <!-- Timeline Steps -->
-            <div class="relative space-y-24">
-                {expertise.map((item, i) => (
-                    <div 
-                        class="relative grid grid-cols-[1fr,auto,1fr] gap-8"
-                        data-step={i}
-                        x-bind:class={`activeSteps.has(${i}) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'`}
-                    >
-                        <!-- Content Card -->
-                        <div class={`transition-all duration-700 ${i % 2 === 0 ? 'col-start-1 pr-8' : 'col-start-3 pl-8'}`}>
-                            <div 
-                                class={`relative p-6 rounded-xl bg-white shadow-lg ${item.highlight ? 'border-l-4 border-[#f39256]' : ''}`}
-                                x-bind:class={`activeSteps.has(${i}) ? 'opacity-100 ${i % 2 === 0 ? 'translate-x-0' : '-translate-x-0'}' : 'opacity-0 ${i % 2 === 0 ? '-translate-x-8' : 'translate-x-8'}'`}
-                            >
-                                <div class="inline-block px-3 py-1 rounded-full bg-[#f39256]/10 mb-3">
-                                    <span class="text-[#f39256] font-bold font-primary">{item.year}</span>
-                                </div>
-                                
-                                <h3 class="text-xl font-bold mb-2 font-primary text-[#2D3748]">{item.title}</h3>
-                                <p class="text-[#4A5568] font-['Avenir_Light'] mb-3">{item.subtitle}</p>
-                                
-                                <div 
-                                    class="h-0.5 bg-[#f39256]/10 my-3"
-                                    x-data
-                                    x-intersect:enter="$el.style.width = '100%'"
-                                    x-intersect:leave="$el.style.width = '0%'"
-                                    style="width: 0%; transition: width 1s ease-out">
-                                </div>
-                                
-                                <p class="text-sm text-[#4A5568] font-['Avenir_Light']">{item.details}</p>
-                            </div>
-                        </div>
-
-                        <!-- Timeline Dot -->
-                        <div class="col-start-2 self-center"> <!-- Changed to self-center -->
-                            <div 
-                                class="w-4 h-4 rounded-full border-2 transition-colors duration-700 z-10 bg-white"
-                                x-bind:class={`activeSteps.has(${i}) ? 'border-[#f39256] bg-[#f39256]' : 'border-gray-300 bg-white'`}>
-                            </div>
-                        </div>
-
-                        <!-- Empty Column for Alternating Layout -->
-                        <div class={`${i % 2 === 0 ? 'col-start-3' : 'col-start-1'}`}></div>
-                    </div>
-                ))}
-            </div>
-        </div>
-    </div>
-</section>
-
-    <!-- Expertise Section -->
-<section class="py-16">
-    <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-16 font-primary text-[#2D3748]">Meine Expertise</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {specializations.map(spec => (
+            <div class="space-y-12">
+              {milestones.map((milestone, i) => (
                 <div 
-                    class="relative p-6 rounded-xl bg-white shadow-lg transform transition-all duration-300 hover:-translate-y-1"
-                    x-data="{ hover: false, inView: false }"
-                    x-intersect:enter="inView = true"
-                    x-intersect:leave="inView = false"
-                    @mouseenter="hover = true"
-                    @mouseleave="hover = false"
+                  class="relative pl-24 flex items-start transition-all duration-700 ease-out"
+                  data-step={i}
+                  x-bind:class={`activeSteps.has(${i}) ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'`}
                 >
-                    <!-- Icon -->
-                    <div class="absolute -top-6 left-6">
-                        <div class="w-12 h-12 rounded-full bg-[#f39256] text-white flex items-center justify-center shadow-lg">
-                            <i class={`fas fa-${spec.icon} text-xl`}></i>
-                        </div>
-                    </div>
+                  <!-- Timeline Dot -->
+                  <div 
+                    class="absolute left-7 top-2.5 w-2 h-2 rounded-full border-2 transition-colors duration-700"
+                    x-bind:class={`activeSteps.has(${i}) ? 'border-accent bg-accent' : 'border-gray-300 bg-white'`}>
+                  </div>
 
-                    <!-- Content -->
-                    <div class="mt-8">
-                        <h3 class="text-xl font-bold font-primary text-[#2D3748] mb-4">{spec.area}</h3>
-                        
-                        <!-- Progress Bar Container -->
-                        <div class="relative h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
-                            <!-- Progress Bar Fill -->
-                            <div 
-                                class="absolute top-0 left-0 h-full bg-[#f39256] rounded-full transition-all duration-1500 ease-out"
-                                x-ref="progress"
-                                x-bind:style="inView ? `width: ${spec.level}%` : 'width: 0%'"
-                            ></div>
-                        </div>
-
-                        <!-- Percentage Display -->
-                        <div 
-                            class="text-sm font-bold text-[#f39256] mb-4"
-                            x-data
-                            x-intersect:enter="$el.style.opacity = 1; $el.style.transform = 'translateY(0)'"
-                            x-intersect:leave="$el.style.opacity = 0; $el.style.transform = 'translateY(10px)'"
-                            style="opacity: 0; transform: translateY(10px); transition: all 0.5s ease-out"
-                        >
-                            <span x-text="`${spec.level}%`"></span>
-                        </div>
-
-                        <p class="text-[#4A5568] font-['Avenir_Light']">{spec.description}</p>
-                    </div>
-
-                    <!-- Hover Effect -->
-                    <div 
-                        class="absolute inset-0 bg-gradient-to-br from-[#f39256]/10 to-transparent rounded-xl transition-opacity duration-300"
-                        x-bind:class="hover ? 'opacity-100' : 'opacity-0'">
-                    </div>
+                  <div class="flex-1 transition-all duration-700">
+                    <div class="text-accent font-semibold mb-1">{milestone.year}</div>
+                    <h3 class="text-xl font-semibold font-primary text-dark mb-2">
+                      {milestone.title}
+                    </h3>
+                    <p class="text-dark/70 leading-relaxed font-secondary">
+                      {milestone.description}
+                    </p>
+                  </div>
                 </div>
-            ))}
-        </div>
-    </div>
-</section>
-
-    <!-- CTA Section -->
-    <section class="py-16 bg-gradient-to-br from-white via-[#E6EFEF]/30 to-[#f39256]/10">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold mb-8 font-primary text-[#2D3748]">Haben Sie Fragen?</h2>
-            <p class="font-['Avenir_Light'] text-lg text-[#4A5568] mb-8">
-                Ich berate Sie gerne persönlich und beantworte alle Ihre Fragen zur logopädischen Therapie.
-            </p>
-            <div class="flex justify-center gap-4">
-                <PrimaryButton href="/kontakt">Kontakt aufnehmen</PrimaryButton>
-                <SecondaryButton href="/therapie">Therapieangebot</SecondaryButton>
+              ))}
             </div>
+          </div>
         </div>
-    </section>
+      </section>
+
+      <!-- Specializations mit Stagger-Effect -->
+      <div class="mt-24"
+        x-data="{ show: false }"
+        x-intersect="show = true">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+            Schwerpunkte & Fortbildungen
+          </h2>
+          <p class="text-lg text-dark/70 font-secondary">
+            Kontinuierliche Weiterbildung für bestmögliche therapeutische Begleitung.
+          </p>
+        </div>
+        <div class="max-w-2xl mx-auto">
+          <ul class="space-y-4">
+            {specializations.map((spec, index) => (
+              <li 
+                class="flex gap-3 transition-all duration-500"
+                x-bind:class="show ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'"
+                style={`transition-delay: ${index * 100}ms`}>
+                <Icon name="check" class="w-5 h-5 text-primary flex-shrink-0 mt-1" />
+                <span class="text-dark/70">{spec}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
 </Layout>
-
-<style>
-.transform {
-    transition: all 0.3s ease-out;
-}
-
-.path-line {
-    opacity: 0.3;
-}
-</style> 
