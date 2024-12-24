@@ -1,18 +1,30 @@
 ---
-import Logo from './Logo.astro';
 import NavLink from './ui/NavLink.astro';
 
 const currentYear = new Date().getFullYear();
 
 const quickLinks = [
   { label: "Über mich", href: "/ueber-mich" },
-  { label: "Leistungen", href: "#services" },
-  { label: "Ablauf", href: "#process" },
-  { label: "Kosten", href: "#costs" },
-  { label: "Praxis", href: "#office" },
-  { label: "Kontakt", href: "#contact" }
+  { label: "Leistungen", href: "/leistungen" },
+  { label: "Ablauf & Kosten", href: "/ablauf-und-kosten" },
+  { label: "Kontakt", href: "/kontakt" }
 ];
 ---
+
+<style>
+  .footer-link {
+    @apply relative text-dark/70 hover:text-dark transition-colors;
+  }
+
+  .footer-link::after {
+    @apply absolute left-0 bottom-[-4px] w-full h-0.5 bg-accent scale-x-0 origin-right transition-transform duration-300;
+    content: '';
+  }
+
+  .footer-link:hover::after {
+    @apply scale-x-100 origin-left;
+  }
+</style>
 
 <footer class="py-12 bg-white border-t border-gray-100">
   <div class="max-w-7xl mx-auto px-4 sm:px-6">
@@ -20,7 +32,15 @@ const quickLinks = [
     <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
       <!-- Logo and Description -->
       <div class="md:col-span-5">
-        <Logo class="h-8 w-auto text-dark" />
+        <a href="/" class="inline-block">
+          <img 
+            src="/images/sprach-eck-logo.svg"
+            alt="Sprach Eck Logo"
+            width="64"
+            height="64"
+            class="w-16 h-16"
+          />
+        </a>
         <p class="mt-4 text-base text-dark/70 leading-relaxed">
           Sprach Eck – Logopädie für Kinder und Jugendliche in Baden bei Wien.
         </p>
@@ -49,14 +69,14 @@ const quickLinks = [
           <p>
             <a 
               href="tel:+436609027092"
-              class="hover:text-dark transition-colors relative after:absolute after:left-0 after:bottom-[-4px] after:w-full after:h-0.5 after:bg-accent after:scale-x-0 after:origin-right after:transition-transform hover:after:scale-x-100 hover:after:origin-left">
+              class="footer-link">
               +43 660 9027092
             </a>
           </p>
           <p>
             <a 
               href="mailto:kontakt@sprach-eck.at"
-              class="hover:text-dark transition-colors relative after:absolute after:left-0 after:bottom-[-4px] after:w-full after:h-0.5 after:bg-accent after:scale-x-0 after:origin-right after:transition-transform hover:after:scale-x-100 hover:after:origin-left">
+              class="footer-link">
               kontakt@sprach-eck.at
             </a>
           </p>
@@ -68,12 +88,12 @@ const quickLinks = [
     <div class="mt-12 pt-8 border-t border-gray-100">
       <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-dark/60">
         <div class="w-full text-center">
-          © {currentYear} Sprach Eck. Alle Rechte vorbehalten. Website erstellt von <a href="https://zunderwunder.at" class="hover:text-dark transition-colors relative after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-0.5 after:bg-accent after:scale-x-0 after:origin-right after:transition-transform hover:after:scale-x-100 hover:after:origin-left" target="_blank" rel="noopener noreferrer">Zunderwunder</a>.
+          © {currentYear} Sprach Eck. Alle Rechte vorbehalten. Website erstellt von <a href="https://zunderwunder.at" class="footer-link" target="_blank" rel="noopener noreferrer">Zunderwunder</a>.
         </div>
         <div class="flex items-center gap-4">
-          <a href="/impressum" class="hover:text-dark transition-colors relative after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-0.5 after:bg-accent after:scale-x-0 after:origin-right after:transition-transform hover:after:scale-x-100 hover:after:origin-left">Impressum</a>
+          <a href="/impressum" class="footer-link">Impressum</a>
           <span>|</span>
-          <a href="/datenschutz" class="hover:text-dark transition-colors relative after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-0.5 after:bg-accent after:scale-x-0 after:origin-right after:transition-transform hover:after:scale-x-100 hover:after:origin-left">Datenschutzerklärung</a>
+          <a href="/datenschutz" class="footer-link">Datenschutzerklärung</a>
         </div>
       </div>
     </div>

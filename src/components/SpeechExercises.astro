@@ -1,0 +1,229 @@
+---
+// Typsichere Interface Definition
+interface Exercise {
+  step: number;
+  title: string;
+  text: string;
+  instruction: string;
+  duration: string;
+  tip: string;
+}
+
+// Übungen in einer Konstante für bessere Wartbarkeit
+const exercises: Exercise[] = [
+  {
+    step: 1,
+    title: "Vorbereitung & Einstimmung",
+    text: "Gemeinsam starten 🏁",
+    instruction: "Macht es euch bequem. Schaltet mögliche Störquellen aus.",
+    duration: "1 Minute",
+    tip: "Macht das Üben zu einem besonderen Moment - vielleicht mit einem kleinen Ritual zu Beginn?"
+  },
+  {
+    step: 2,
+    title: "Aufwärmübung: Mundgymnastik",
+    text: "Zungen-Safari 👅",
+    instruction: "Lasst uns spielerisch die Zunge erforschen: Nach oben zur 'Giraffe', nach unten zum 'Elefanten', nach links zum 'Affen' und rechts zum 'Löwen'.",
+    duration: "2-3 Minuten",
+    tip: "Macht die Bewegungen im Spiegel gemeinsam - das macht mehr Spaß!"
+  },
+  {
+    step: 3,
+    title: "Pustespiel",
+    text: "Es windet 🌬️",
+    instruction: "Pustet gemeinsam: erst sanft wie ein Schmetterling, dann stark wie ein Sturm. Verwendet einen Wattebausch oder eine Papierblume zum Pusten.",
+    duration: "2-3 Minuten",
+    tip: "Variiert die Intensität: von ganz leicht bis richtig stark."
+  },
+  {
+    step: 4,
+    title: "Lautübung: Der Zug",
+    text: "Sch-sch-sch 🚂 ",
+    instruction: "Spielt zusammen Eisenbahn. Der Zug macht 'Sch-sch-sch'. Erst langsam, dann schneller, dann wieder langsamer.",
+    duration: "2-3 Minuten",
+    tip: "Baut eine kleine Eisenbahnstrecke mit Kuscheltieren als Fahrgäste."
+  },
+  {
+    step: 5,
+    title: "Silbenspiel",
+    text: "Klatsch mit! 👏",
+    instruction: "Klatscht Lieblingswörter in Silben: 'Scho-ko-la-de', 'Eis-bär', 'But-ter-blu-me'",
+    duration: "2-3 Minuten",
+    tip: "Lasst euch eigene Wörter einfallen."
+  },
+  {
+    step: 6,
+    title: "Entspannung & Abschluss",
+    text: "Toll gemacht! 🌟",
+    instruction: "Lobt euch zusammen für eure tolle Mitarbeit!",
+    duration: "1 Minute",
+    tip: "Welche Übung hat euch am meisten Spaß gemacht?"
+  }
+];
+---
+
+<div class="speech-exercise-container max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow-lg"
+  x-data="{ 
+    currentStep: 0,
+    progressWidth: '0%',
+    exercises: exercises,
+    nextStep() {
+      if (this.currentStep < this.exercises.length - 1) {
+        this.currentStep++;
+        this.updateProgress();
+      } else {
+        this.showCompletion();
+      }
+    },
+    prevStep() {
+      if (this.currentStep > 0) {
+        this.currentStep--;
+        this.updateProgress();
+      }
+    },
+    updateProgress() {
+      this.progressWidth = `${(this.currentStep / (this.exercises.length - 1)) * 100}%`;
+    },
+    showCompletion() {
+      // Konfetti Animation
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#2C7A7B', '#81E6D9', '#B2F5EA']
+      });
+
+      // Zusätzliche Konfetti-Wellen
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+      }, 250);
+    }
+  }"
+  x-init="$nextTick(() => updateProgress())"
+>
+  <!-- Progress Bar -->
+  <div class="progress-bar mb-8" role="progressbar" :aria-valuenow="currentStep + 1" :aria-valuemin="1" :aria-valuemax="exercises.length">
+    <div class="flex justify-between mb-2 relative">
+      <!-- Background Line -->
+      <div class="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -translate-y-1/2"></div>
+      <!-- Progress Line -->
+      <div class="absolute top-1/2 left-0 h-0.5 bg-accent -translate-y-1/2 transition-all duration-500"
+        x-bind:style="`width: ${progressWidth}`">
+      </div>
+      <!-- Step Indicators -->
+      <template x-for="(step, index) in exercises" :key="index">
+        <div class="relative z-10">
+          <div class="step-indicator w-10 h-10 rounded-xl flex items-center justify-center border-2 transition-all duration-300"
+            :class="index <= currentStep ? 'bg-accent text-white border-accent' : 'bg-white text-gray-400 border-gray-300'"
+            :aria-label="`Schritt ${index + 1}`"
+            role="button"
+            @click="currentStep = index; updateProgress()">
+            <span x-text="index + 1"></span>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- Exercise Content -->
+  <div class="relative bg-white rounded-xl p-6 md:p-8">
+    <template x-for="(exercise, index) in exercises" :key="index">
+      <div x-show="currentStep === index"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-4"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        role="tabpanel"
+        :aria-labelledby="`step-${index + 1}`">
+        <div class="text-center mb-8">
+          <span class="step-badge inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm mb-4">
+            Schritt <span x-text="currentStep + 1"></span> von <span x-text="exercises.length"></span>
+          </span>
+          <h3 class="text-2xl font-secondary text-dark mb-6" x-text="exercise.title" :id="`step-${index + 1}`"></h3>
+          <div class="text-3xl mb-4 font-bold font-primary" x-text="exercise.text"></div>
+        </div>
+
+        <div class="instruction-box bg-gray-50 p-6 rounded-lg mb-6">
+          <p class="text-dark/70 text-lg" x-text="exercise.instruction"></p>
+          <p class="text-sm text-dark/50 mt-3" x-text="`Dauer: ${exercise.duration}`"></p>
+        </div>
+
+        <div class="tip-box bg-primary/5 p-4 rounded-lg mb-8">
+          <p class="text-primary/90">
+            <span class="font-semibold">💡 Tipp: </span>
+            <span x-text="exercise.tip"></span>
+          </p>
+        </div>
+      </div>
+    </template>
+
+    <!-- Navigation -->
+    <div class="flex justify-between items-center mt-8">
+      <button 
+        @click="prevStep"
+        class="btn text-primary hover:text-primary/80 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+        :disabled="currentStep === 0"
+        :aria-disabled="currentStep === 0">
+        <span class="sr-only">Zurück zum vorherigen Schritt</span>
+        <span aria-hidden="true">← Zurück</span>
+      </button>
+      <button 
+        @click="nextStep"
+        class="btn bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center gap-2">
+        <span x-text="currentStep === exercises.length - 1 ? 'Übung beenden 🎉' : 'Weiter →'"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+  /* Optimierte CSS-Transitions */
+  .step-indicator {
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .step-indicator.completed {
+    @apply bg-accent border-accent text-white;
+  }
+
+  .step-indicator.active {
+    @apply bg-accent border-accent text-white;
+    transform: scale(1.1);
+  }
+
+  .btn {
+    transition: all 0.2s ease;
+  }
+
+  .btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  .btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  /* Reduzierte Animation für Barrierefreiheit */
+  @media (prefers-reduced-motion: reduce) {
+    .transition-all,
+    .step-indicator,
+    .btn {
+      transition: none;
+      animation: none;
+      transform: none !important;
+    }
+  }
+</style>

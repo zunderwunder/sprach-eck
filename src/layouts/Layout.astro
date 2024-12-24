@@ -1,7 +1,5 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
-import '@fontsource-variable/quicksand';
-import '@fontsource/plus-jakarta-sans';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
@@ -21,18 +19,72 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/images/sprach-eck-logo.svg" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <title>{title} | Sprach Eck | Logopädie Baden</title>
-    <ViewTransitions />
-    <link rel="stylesheet" href="/fonts/fontawesome/css/all.min.css" />
+    <title>{title}</title>
     
-    <!-- Alpine.js -->
-    <script is:inline src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <script is:inline src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js" defer></script>
+    <!-- Critical Font-Loading CSS -->
+    <style is:inline>
+      /* Quicksand Bold */
+      @font-face {
+        font-family: 'Quicksand';
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url('/fonts/Quicksand Bold 700.ttf') format('truetype');
+      }
+
+      /* Avenir Light */
+      @font-face {
+        font-family: 'Avenir';
+        font-style: normal;
+        font-weight: 300;
+        font-display: swap;
+        src: url('/fonts/Avenir Light.ttf') format('truetype');
+      }
+
+      /* Base Styles */
+      html {
+        font-family: 'Avenir', system-ui, sans-serif;
+        font-weight: 300;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Quicksand', system-ui, sans-serif;
+        font-weight: 700;
+      }
+    </style>
+
+    <ViewTransitions />
+    
+    <!-- Alpine.js mit Performance-Optimierungen -->
+    <script is:inline>
+      window.Alpine = window.Alpine || {};
+      window.Alpine.prefetch = true;
+    </script>
+    
+    <script>
+      document.addEventListener('astro:page-load', () => {
+        window.Alpine?.start();
+      });
+    </script>
+    
+    <!-- Alpine.js Core und Plugins -->
+    <script 
+      defer 
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+      integrity="sha384-6m68GQxj4qxvUp8e4k1qCVrv3FuZK3aZnMpCHBhQ8gRhXuL3bXn3yxz1Mb7VZU4"
+      crossorigin="anonymous"
+    ></script>
+    <script 
+      defer 
+      src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"
+      integrity="sha384-QZLT0ZHpHK8nBNZLm/Pk1OGF3lqVH8VHUpT9ZqTFDIHGKZhXvXtVREwz+RQEugv"
+      crossorigin="anonymous"
+    ></script>
   </head>
-  <body class="min-h-screen flex flex-col font-secondary">
+  <body class="min-h-screen flex flex-col">
     <Header />
     <main class="flex-1">
       <slot />
@@ -40,3 +92,51 @@ const {
     <Footer />
   </body>
 </html>
+
+<style is:global>
+  /* Utility Classes */
+  .js .js-hidden {
+    display: none;
+  }
+
+  [x-cloak] {
+    display: none !important;
+  }
+
+  /* Animation Utilities */
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes float-medium {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  @keyframes float-fast {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  .animate-float-slow {
+    animation: float-slow 4s ease-in-out infinite;
+  }
+
+  .animate-float-medium {
+    animation: float-medium 3s ease-in-out infinite;
+  }
+
+  .animate-float-fast {
+    animation: float-fast 2s ease-in-out infinite;
+  }
+
+  /* Reduzierte Bewegung für Barrierefreiheit */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float-slow,
+    .animate-float-medium,
+    .animate-float-fast {
+      animation: none;
+    }
+  }
+</style>

@@ -6,19 +6,25 @@ interface Props {
   description: string;
   image: string;
   href: string;
+  imageProps?: {
+    width?: number;
+    height?: number;
+    loading?: "lazy" | "eager";
+    decoding?: "async" | "sync" | "auto";
+    fetchpriority?: "high" | "low" | "auto";
+  };
 }
 
-const { title, description, image, href } = Astro.props;
+const { title, description, image, href, imageProps = {} } = Astro.props;
 ---
 
 <div class="group bg-white rounded-xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
   <div class="aspect-[4/3] overflow-hidden">
-    <Image
+    <img 
       src={image}
-      alt={title}
-      width={772}
-      height={579}
-      class="w-full h-full object-cover"
+      alt={`Illustration für ${title}`}
+      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+      {...imageProps}
     />
   </div>
   

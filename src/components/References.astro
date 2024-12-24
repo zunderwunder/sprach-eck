@@ -1,0 +1,245 @@
+---
+import { Image } from 'astro:assets';
+
+interface Reference {
+  content: string;
+  author: string;
+  age: number;
+  year?: string;
+  image?: string;
+}
+
+const references: Reference[] = [
+  {
+    content: "Viki ist eine der besten Logopädinnen, die man sich nur vorstellen kann! Sie ist so einfühlsam, kann mit Kindern sehr gut umgehen. Meine Tochter geht sehr gerne zu ihr hin! Sie zeigt viel Verständnis und hat auch sehr viel Geduld. Wir sind froh, solch eine Logopädin gefunden zu haben!",
+    author: "Luiza",
+    age: 5,
+    image: "/images/Luiza.webp"
+  },
+  {
+    content: "Mein Sohn hat damals weniger als 50 Wörter gesprochen, hat auch kaum mit Fremden oder im Kindergarten gesprochen. Viki ist eine sehr kompetente, sympathische und liebe Logopädin, sie geht auf David ein und interessiert sich für ihn. Sie hat ihn auf spielerische Art und Weise dazu gebracht, vollständige Sätze zu sprechen.",
+    author: "David",
+    age: 6,
+    image: "/images/David.webp"
+  },
+  {
+    content: "Viki ist eine sehr kompetente Logopädin. Durch ihre offene und herzliche Art fühlte sich meine Tochter vom ersten Moment an sehr wohl bei ihr. Aber auch als Mutter wurde ich durch ihr positives Wesen und ihrem Einfühlungsvermögen auch bei hartnäckigen Problemen sehr ermutigt. Sie hat den Prozess der Therapie und den Zweck der einzelnen Übungen immer verständlich erklärt.",
+    author: "Veronika",
+    age: 9,
+    image: "/images/Veronika.webp"
+  }
+] as const;
+
+// Layout Konstanten
+const SECTION_SPACING = "py-16 md:py-24 bg-primary/5";
+const ANIMATION_CLASSES = "transition-all duration-700 ease-out";
+---
+
+<section 
+  id="references" 
+  class={`${SECTION_SPACING} relative overflow-hidden`}
+  aria-labelledby="references-title"
+>
+  <!-- Animated Background Shapes -->
+  <div class="absolute inset-0 z-0">
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+    <div class="floating-shape shape-4"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-1">
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <h2 
+        id="references-title"
+        class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+        Das sagen Familien über mich
+      </h2>
+      <p class="text-lg text-dark/70 leading-relaxed">
+        Erfahrungen und Eindrücke von Eltern und Kindern, die ich auf ihrem Weg begleiten durfte.
+      </p>
+    </div>
+
+    <!-- References Grid -->
+    <div class="grid gap-6 md:gap-8 max-w-5xl mx-auto">
+      {references.map((reference, index) => (
+        <div 
+          class="group p-6 rounded-xl bg-light border border-primary/10 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1"
+          data-reference
+          x-data="{ show: false }"
+          x-intersect="show = true"
+          x-bind:class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+        >
+          <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
+            <!-- Author Image -->
+            <div class="flex-shrink-0 mx-auto md:mx-0">
+              <div class="w-24 h-24 rounded-full overflow-hidden bg-primary/5">
+                {reference.image && (
+                  <img
+                    src={reference.image}
+                    alt={reference.author}
+                    class="w-full h-full object-cover"
+                    width="120"
+                    height="120"
+                    loading="eager"
+                    decoding="async"
+                    fetchpriority="high"
+                  />
+                )}
+              </div>
+            </div>
+
+            <!-- Quote Content -->
+            <blockquote class="flex-1 space-y-4">
+              <p class="text-dark/70 leading-relaxed text-lg relative px-6">
+                <span class="absolute left-0 top-0 text-4xl text-primary/20">"</span>
+                {reference.content}
+                <span class="absolute -bottom-4 right-0 text-4xl text-primary/20">"</span>
+              </p>
+              <footer class="flex items-center gap-2 text-sm pt-3 px-6">
+                <cite class="text-lg font-semibold font-primary text-dark group-hover:text-primary transition-colors duration-300 not-italic">
+                  {reference.author}, {reference.age} Jahre
+                </cite>
+                {reference.year && (
+                  <span class="text-dark/40">
+                    seit {reference.year}
+                  </span>
+                )}
+              </footer>
+            </blockquote>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .reference-card {
+    @apply relative;
+    contain: content;
+  }
+
+  [data-reference] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity, box-shadow;
+  }
+
+  [data-reference].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    [data-reference] {
+      transition: none;
+      transform: none !important;
+    }
+    
+    .reference-card:hover [data-reference] {
+      transform: none !important;
+    }
+  }
+
+  .floating-shape {
+    @apply absolute opacity-10;
+    background: theme('colors.primary');
+  }
+
+  .shape-1 {
+    width: 150px;
+    height: 150px;
+    border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+    left: 5%;
+    top: 5%;
+    animation: float 14s ease-in-out infinite;
+  }
+
+  .shape-2 {
+    width: 100px;
+    height: 100px;
+    border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+    right: 2%;
+    top: 30%;
+    animation: float 12s ease-in-out infinite reverse;
+  }
+
+  .shape-3 {
+    width: 75px;
+    height: 75px;
+    border-radius: 49% 51% 48% 52% / 57% 44% 56% 43%;
+    left: -1%;
+    bottom: 30%;
+    animation: float 16s ease-in-out infinite;
+  }
+
+  .shape-4 {
+    width: 125px;
+    height: 125px;
+    border-radius: 53% 47% 59% 41% / 47% 53% 47% 53%;
+    right: -1%;
+    bottom: 5%;
+    animation: float 18s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(30px, -30px) rotate(120deg); }
+    66% { transform: translate(-20px, 20px) rotate(240deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+  }
+</style>
+
+<script>
+  let observer: IntersectionObserver;
+  
+  const setupReferencesAnimation = () => {
+    if (observer) {
+      observer.disconnect();
+    }
+
+    const items = document.querySelectorAll('[data-reference]');
+    
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const delay = parseInt(entry.target.getAttribute('data-index') || '0') * 150;
+            setTimeout(() => {
+              entry.target.classList.add('is-visible');
+            }, delay);
+          } else {
+            const rect = entry.boundingClientRect;
+            const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+            if (rect.top >= viewHeight || rect.bottom <= 0) {
+              entry.target.classList.remove('is-visible');
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '50px'
+      }
+    );
+
+    items.forEach((item, index) => {
+      item.setAttribute('data-index', index.toString());
+      observer.observe(item);
+    });
+  };
+
+  // Setup on initial load and after navigation
+  document.addEventListener('astro:page-load', setupReferencesAnimation);
+  
+  // Cleanup
+  document.addEventListener('astro:before-swap', () => {
+    if (observer) {
+      observer.disconnect();
+    }
+  });
+</script> 

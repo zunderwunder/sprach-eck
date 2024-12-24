@@ -1,66 +1,93 @@
 ---
-import ContactForm from './ui/ContactForm.astro';
-import { Image } from 'astro:assets';
-
-const location = {
-  image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',
-  address: 'Kaiser Franz Joseph-Ring 36',
-  postal: '2500 Baden',
-  phone: '+43 660 9027092',
-  email: 'kontakt@sprach-eck.at'
-};
 ---
 
-<section id="contact" class="py-16 md:py-24 bg-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="text-center mb-16">
+<section class="py-12 md:py-20 bg-white">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
       <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
-        Haben Sie weitere Fragen?
+        Für Fragen habe ich jederzeit ein offenes Ohr!
       </h2>
       <p class="text-lg text-dark/70 font-secondary">
-        Ich bin natürlich für Sie da und freue mich auf Ihre Nachricht!
+        Ich bin natürlich für dich da und freue mich auf deine Nachricht!
       </p>
     </div>
 
-    <div class="grid md:grid-cols-5 gap-8">
-      <!-- Location -->
-      <div class="md:col-span-2 flex flex-col items-center md:items-start">
-        <div class="flex flex-col w-full max-w-[300px]">
-          <Image
-            src={location.image}
-            alt="Praxis Baden"
-            width={300}
-            height={200}
-            class="w-[300px] h-[200px] object-cover rounded-lg"
-          />
-          <div class="space-y-2 mt-4">
-            <h3 class="text-xl font-semibold font-primary text-dark">
-              Praxis Baden
-            </h3>
-            <div class="space-y-2 text-base text-dark/70">
-              <p>{location.address}, {location.postal}</p>
-              <p>
-                <a 
-                  href={`tel:${location.phone.replace(/\s/g, '')}`}
-                  class="hover:text-dark transition-colors relative after:absolute after:left-0 after:bottom-[-4px] after:w-full after:h-0.5 after:bg-accent after:scale-x-0 after:origin-right after:transition-transform hover:after:scale-x-100 hover:after:origin-left">
-                  {location.phone}
-                </a>
-              </p>
-              <p>
-                <a 
-                  href={`mailto:${location.email}`}
-                  class="hover:text-dark transition-colors relative after:absolute after:left-0 after:bottom-[-4px] after:w-full after:h-0.5 after:bg-accent after:scale-x-0 after:origin-right after:transition-transform hover:after:scale-x-100 hover:after:origin-left">
-                  {location.email}
-                </a>
-              </p>
-            </div>
+    <!-- Contact Form -->
+    <div class="max-w-2xl mx-auto">
+      <div class="bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 rounded-xl p-6 md:p-8">
+        <form class="space-y-6">
+          <!-- Name Field -->
+          <div>
+            <label for="name" class="block text-dark/70 mb-2">
+              Dein Name <span class="text-primary">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              placeholder="Name"
+              required
+              class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-dark/80"
+            />
           </div>
-        </div>
-      </div>
 
-      <!-- Contact Form -->
-      <div class="md:col-span-3 bg-gray-50 rounded-2xl p-8">
-        <ContactForm />
+          <!-- Email Field -->
+          <div>
+            <label for="email" class="block text-dark/70 mb-2">
+              Deine E-Mail <span class="text-primary">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              placeholder="dasisteine@email.at"
+              required
+              class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-dark/80"
+            />
+          </div>
+
+          <!-- Message Field -->
+          <div>
+            <label for="message" class="block text-dark/70 mb-2">
+              Deine Nachricht <span class="text-primary">*</span>
+            </label>
+            <textarea 
+              id="message" 
+              name="message" 
+              rows="5"
+              placeholder="Hallo Viki! Ich wollte dich fragen, ..."
+              required
+              class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors resize-none text-dark/80"
+            ></textarea>
+          </div>
+
+          <!-- GDPR Consent -->
+          <div class="flex gap-3">
+            <input
+              type="checkbox"
+              id="gdpr"
+              name="gdpr"
+              required
+              class="mt-1 rounded border-gray-300 text-primary focus:ring-primary"
+            />
+            <label for="gdpr" class="text-dark/70 text-sm">
+              Ich stimme zu, dass meine Angaben zur Kontaktaufnahme und für Rückfragen gespeichert werden. Weitere Informationen finden Sie in der <a href="/datenschutz" class="text-primary hover:text-primary/80 underline">Datenschutzerklärung</a>. <span class="text-primary">*</span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit"
+            class="w-full py-3 px-6 bg-primary text-white rounded-lg hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300 font-medium shadow-sm hover:shadow-md"
+          >
+            Nachricht senden
+          </button>
+
+          <!-- Required Fields Note -->
+          <p class="text-sm text-dark/60 text-center mt-4">
+            <span class="text-primary">*</span> Pflichtfelder
+          </p>
+        </form>
       </div>
     </div>
   </div>

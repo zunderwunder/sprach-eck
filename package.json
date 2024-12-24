@@ -13,13 +13,12 @@
     "@alpinejs/intersect": "^3.14.3",
     "@astrojs/alpinejs": "^0.4.0",
     "@astrojs/tailwind": "^5.1.0",
-    "@fontsource-variable/quicksand": "^5.0.16",
-    "@fontsource/plus-jakarta-sans": "^5.0.18",
     "alpinejs": "^3.14.3",
     "astro": "^4.16.13",
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
-    "@astrojs/ts-plugin": "^1.10.4"
+    "@astrojs/ts-plugin": "^1.10.4",
+    "@tailwindcss/forms": "^0.5.9"
   }
 }

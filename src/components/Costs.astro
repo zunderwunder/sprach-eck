@@ -47,7 +47,7 @@ const infoSections = [
           </div>
         </div>
 
-        <ul class="space-y-4 mb-8">
+        <ul class="space-y-4">
           {features.map(feature => (
             <li class="flex items-center gap-3 text-dark/80">
               <Icon name="check" class="w-5 h-5 text-primary flex-shrink-0" />
@@ -55,10 +55,6 @@ const infoSections = [
             </li>
           ))}
         </ul>
-
-        <PrimaryButton href="/termin" class="w-full justify-center">
-          Termin vereinbaren
-        </PrimaryButton>
       </div>
 
       <!-- Info Sections -->
@@ -78,6 +74,13 @@ const infoSections = [
           Für Hausbesuche fällt eine zusätzliche Pauschale an.
         </p>
       </div>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="text-center mt-12">
+      <PrimaryButton href="/ablauf-und-kosten">
+        Alle Details zu Kosten & Ablauf
+      </PrimaryButton>
     </div>
   </div>
 </section>

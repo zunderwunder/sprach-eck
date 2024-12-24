@@ -1,4 +1,6 @@
 ---
+import PrimaryButton from './ui/PrimaryButton.astro';
+
 const steps = [
   {
     title: 'Kontaktaufnahme',
@@ -21,7 +23,7 @@ const steps = [
 
 <section 
   id="process"
-  class="py-16 md:py-24 bg-white"
+  class="py-12 md:py-20 bg-white"
   x-data="{ 
     activeSteps: new Set(),
     init() {
@@ -46,8 +48,8 @@ const steps = [
       });
     }
   }">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="text-center max-w-3xl mx-auto mb-16">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
       <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
         So arbeiten wir zusammen
       </h2>
@@ -58,7 +60,9 @@ const steps = [
 
     <div class="relative max-w-3xl mx-auto">
       <!-- Timeline Line -->
-      <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-100">
+      <div 
+        class="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-100"
+        style="contain: paint;">
         <div 
           class="absolute top-0 left-0 w-full bg-accent transition-all duration-1000 ease-in-out"
           style="height: 0%;"
@@ -92,6 +96,13 @@ const steps = [
           </div>
         ))}
       </div>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="text-center mt-12">
+      <PrimaryButton href="/ablauf-und-kosten">
+        Mehr zum Ablauf erfahren
+      </PrimaryButton>
     </div>
   </div>
 </section>

@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.mjs
 export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
@@ -10,10 +10,14 @@ export default {
         light: '#FFFFFF',
       },
       fontFamily: {
-        primary: ['Quicksand Variable', 'sans-serif'],
-        secondary: ['Avenir Light', 'sans-serif'],
+        sans: ['Avenir', 'system-ui', 'sans-serif'],
+        primary: ['Quicksand', 'system-ui', 'sans-serif']
       },
-    },
+      fontWeight: {
+        light: '300',
+        bold: '700',
+      }
+    }
   },
-  plugins: [],
-}
+  plugins: [import('@tailwindcss/forms').then(module => module.default)]
+};
