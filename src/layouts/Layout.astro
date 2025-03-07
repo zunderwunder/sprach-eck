@@ -1,5 +1,4 @@
 ---
-import '../styles/fonts.css';
 import { ViewTransitions } from "astro:transitions";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -52,20 +51,20 @@ const {
     <style is:global>
       /* Schriftarten-Definition */
       @font-face {
-        font-family: "Poppins";
-        src: url("/fonts/poppins-semibold-webfont.woff2") format("woff2");
-        font-weight: 600;
-        font-style: normal;
-        font-display: swap;
-      }
-
-      @font-face {
-        font-family: "Avenir Light";
-        src: url("/fonts/avenir-light-webfont.woff2") format("woff2");
-        font-weight: 300;
-        font-style: normal;
-        font-display: swap;
-      }
+    font-family: 'Nunito';
+    src: url('/fonts/nunito-light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: fallback;
+  }
+  
+     @font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/poppins-semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: fallback;
+  }
 
       /* Alpine.js Utilities */
       .js .js-hidden {
