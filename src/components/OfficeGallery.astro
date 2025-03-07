@@ -10,36 +10,40 @@ interface OfficeImage {
 
 const officeImages: OfficeImage[] = [
   {
-    src: '/images/Praxis-01.webp',
-    alt: 'Praxis von außen - Eingangsbereich der logopädischen Praxis',
+    src: '../images/logopaedie-praxis-therapieraum-baden.webp',
+    alt: 'Heller, kinderfreundlicher Therapieraum der Logopädie-Praxis Spracheck in Baden',
     width: 800,
     height: 800
   },
   {
-    src: '/images/Praxis-02.webp',
+    src: '../images/logopaedie-therapie-logopaedie-sprachfoerderung.webp',
     alt: 'Praxis Straßenansicht - Gebäudeansicht mit Umgebung',
     width: 800,
     height: 800
   },
   {
-    src: '/images/Praxis-03.webp',
+    src: '../images/logopaedie-spielerische-therapie-umgebung.webp',
     alt: 'Therapieraum - Kind beim therapeutischen Spielen',
     width: 800,
     height: 800
   },
   {
-    src: '/images/Praxis-04.webp',
+    src: '../images/logopaedie-handschlag-spass.webp',
     alt: 'Therapiematerialien - Buchstaben und Lernspiele',
     width: 800,
     height: 800
   }
 ];
+
+// Animation-Varianten für verschiedene Effekte
+const animations = ['fade-up', 'fade-left', 'fade-right', 'zoom-in'];
 ---
 
-<section 
+<section
   class="max-w-4xl mx-auto px-4 py-12"
   aria-label="Praxisimpressionen"
-  x-data="{ 
+  x-data="{
+    activeIndex: null,
     setupIntersectionObserver() {
       const observer = new IntersectionObserver(
         (entries) => {
@@ -52,61 +56,114 @@ const officeImages: OfficeImage[] = [
         },
         { threshold: 0.2, rootMargin: '50px' }
       );
-
+      
       document.querySelectorAll('.gallery-item').forEach(item => {
         observer.observe(item);
       });
+    },
+    handleImageHover(index) {
+      this.activeIndex = index;
+    },
+    handleImageLeave() {
+      this.activeIndex = null;
     }
   }"
   x-init="setupIntersectionObserver"
 >
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+  <h2 class="text-2xl font-semibold text-center mb-8 opacity-0 transform translate-y-4 gallery-title">
+    Einblicke in unsere Praxis
+  </h2>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
     {officeImages.map((image, index) => (
-      <div 
-        class="gallery-item opacity-0 transform translate-y-4 transition-all duration-700 ease-out overflow-hidden rounded-lg bg-gray-50 aspect-square"
+      <div
+        class={`gallery-item opacity-0 transform transition-all duration-700 ease-out overflow-hidden rounded-lg bg-gray-50 shadow-sm hover:shadow-md ${animations[index % animations.length]}`}
         style={`transition-delay: ${index * 150}ms`}
+        x-on:mouseenter={`handleImageHover(${index})`}
+        x-on:mouseleave="handleImageLeave()"
       >
-        <Image
-          src={image.src}
-          alt={image.alt}
-          width={600}
-          height={600}
-          loading="lazy"
-          fetchpriority={index === 0 ? "high" : "auto"}
-          decoding="async"
-          format="webp"
-          quality={85}
-          class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-out"
-          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 45vw"
-        />
+        <div class="relative overflow-hidden aspect-square">
+          <Image
+            src={image.src}
+            alt={image.alt}
+            width={600}
+            height={600}
+            loading="lazy"
+            fetchpriority={index === 0 ? "high" : "auto"}
+            decoding="async"
+            format="webp"
+            quality={85}
+            class="w-full h-full object-cover transition-all duration-500 ease-out"
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 45vw"
+            x-bind:class={`activeIndex === ${index} ? 'scale-105 brightness-105' : ''`}
+          />
+          <div 
+            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300"
+            x-bind:class={`activeIndex === ${index} ? 'opacity-100' : ''`}
+          >
+            <p class="absolute bottom-4 left-4 right-4 text-white text-sm md:text-base font-medium transform translate-y-4 transition-transform duration-300"
+               x-bind:class={`activeIndex === ${index} ? 'translate-y-0' : ''`}>
+              {image.alt}
+            </p>
+          </div>
+        </div>
       </div>
     ))}
   </div>
 </section>
 
 <style>
+  .gallery-title {
+    animation: fadeIn 0.8s 0.3s forwards;
+  }
+  
   .gallery-item {
     will-change: transform, opacity;
     contain: layout style paint;
     backface-visibility: hidden;
   }
-
+  
   .gallery-item.show {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateX(0) scale(1);
   }
-
+  
+  .fade-up {
+    transform: translateY(40px);
+  }
+  
+  .fade-left {
+    transform: translateX(-40px);
+  }
+  
+  .fade-right {
+    transform: translateX(40px);
+  }
+  
+  .zoom-in {
+    transform: scale(0.95);
+  }
+  
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
   @media (prefers-reduced-motion: reduce) {
-    .gallery-item {
+    .gallery-item, .gallery-title {
       transition: none;
       transform: none;
+      animation: none;
     }
     
-    .gallery-item img {
+    .gallery-item img,
+    .gallery-item div {
       transition: none;
     }
   }
-
+  
   @media (max-width: 768px) {
     .gallery-item:not(:first-child) {
       content-visibility: auto;
@@ -118,8 +175,21 @@ const officeImages: OfficeImage[] = [
 <script>
   // Defer intersection observer setup
   document.addEventListener('DOMContentLoaded', () => {
-    requestIdleCallback(() => {
-      // Your existing intersection observer code
-    });
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        // Intersection Observer wird durch Alpine.js x-init gehandhabt
+        
+        // Zusätzliche Bildoptimierung
+        const images = document.querySelectorAll('.gallery-item img');
+        if ('connection' in navigator && (navigator.connection as any).saveData) {
+          images.forEach(img => {
+            if (img instanceof HTMLImageElement) {
+              img.setAttribute('loading', 'lazy');
+              img.setAttribute('decoding', 'async');
+            }
+          });
+        }
+      });
+    }
   });
 </script>
