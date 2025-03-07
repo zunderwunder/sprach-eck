@@ -1,0 +1,94 @@
+---
+interface Props {
+  href: string;
+  class?: string;
+  /** Optional: Markiert den Link als aktiv */
+  active?: boolean;
+  /** Optional: Verzögerung für Hover-Animation in ms */
+  hoverDelay?: number;
+}
+
+const { 
+  href, 
+  class: className = "",
+  active = false,
+  hoverDelay = 0 
+} = Astro.props;
+
+// Bestimme ob es ein interner Anker-Link ist
+const isHashLink = href.startsWith('#');
+
+// Basis-Klassen für konsistentes Styling
+const BASE_CLASSES = [
+  "text-base relative",
+  "text-dark/70 hover:text-dark transition-colors",
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 rounded-md",
+  className
+];
+
+// Klassen für den Unterstrich-Effekt
+const UNDERLINE_CLASSES = [
+  "after:absolute after:left-0 after:bottom-[-4px]",
+  "after:w-full after:h-0.5 after:bg-accent",
+  "after:scale-x-0 after:origin-right",
+  "after:transition-transform after:duration-300",
+  "hover:after:scale-x-100 hover:after:origin-left"
+];
+---
+
+<a 
+  {href}
+  class:list={[BASE_CLASSES, UNDERLINE_CLASSES]}
+  aria-current={active ? 'page' : undefined}
+  style={hoverDelay ? `--hover-delay: ${hoverDelay}ms` : undefined}
+  x-data={isHashLink ? `{
+    scrollToTarget() {
+      const target = document.querySelector(this.$el.getAttribute('href'));
+      if (!target) return;
+      
+      const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches 
+        ? 'auto' 
+        : 'smooth';
+      
+      target.scrollIntoView({ behavior, block: 'start' });
+    }
+  }` : undefined}
+  @click={isHashLink ? "scrollToTarget(); $event.preventDefault()" : undefined}
+>
+  <slot />
+</a>
+
+<style>
+  /* Optimierte Hover-Animation */
+  a::after {
+    will-change: transform;
+    transition-delay: var(--hover-delay, 0ms);
+  }
+
+  /* Aktiver Zustand */
+  a[aria-current="page"] {
+    @apply text-dark;
+  }
+  
+  a[aria-current="page"]::after {
+    @apply scale-x-100 origin-left;
+  }
+
+  /* Reduzierte Bewegung */
+  @media (prefers-reduced-motion: reduce) {
+    a::after {
+      transition: none;
+    }
+  }
+
+  /* Touch-Geräte Optimierung */
+  @media (hover: none) {
+    a::after {
+      @apply scale-x-0;
+    }
+    
+    a:active::after {
+      @apply scale-x-100 origin-left;
+    }
+  }
+</style>

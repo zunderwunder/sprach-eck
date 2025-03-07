@@ -1,0 +1,147 @@
+---
+import NavLink from './ui/NavLink.astro';
+
+// Navigation items in einer konstanten für bessere Wartbarkeit
+const navItems = [
+  { label: "Über mich", href: "/ueber-mich" },
+  { label: "Leistungen", href: "/leistungen" },
+  { label: "Ablauf & Kosten", href: "/ablauf-und-kosten" },
+  { label: "Kontakt", href: "/kontakt" }
+] as const;
+
+// Konstanten für wiederverwendbare Klassen
+const BUTTON_BASE_CLASSES = "inline-flex items-center justify-center px-4 py-2 rounded-md text-base font-medium transition-colors";
+const CTA_BUTTON_CLASSES = `${BUTTON_BASE_CLASSES} bg-primary text-white hover:bg-primary/90`;
+---
+
+<header 
+  class="w-full bg-white border-b border-gray-100 sticky top-0 z-50"
+  x-data="{ 
+    isOpen: false,
+    // Schließe Mobile-Menü bei Resize über Breakpoint
+    init() {
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) this.isOpen = false;
+      });
+    }
+  }"
+  role="banner">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <!-- Main Navigation Bar -->
+    <div class="flex justify-between items-center py-3">
+      <!-- Logo Section -->
+      <div class="flex items-center">
+        <a 
+          href="/" 
+          class="flex items-center gap-2"
+          aria-label="Zur Startseite">
+          <img 
+            src="/images/sprach-eck-logo.svg"
+            alt="Sprach Eck Logo"
+            width="64"
+            height="64"
+            class="w-14 h-14"
+          />
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        type="button"
+        class="md:hidden text-gray-500 hover:text-gray-600 p-2"
+        @click="isOpen = !isOpen"
+        :aria-expanded="isOpen"
+        aria-controls="mobile-menu"
+        aria-label="Hauptmenü">
+        <span class="sr-only" x-text="isOpen ? 'Menü schließen' : 'Menü öffnen'"></span>
+        <svg
+          x-show="!isOpen"
+          class="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg
+          x-show="isOpen"
+          class="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Desktop Navigation -->
+      <nav 
+        class="hidden md:flex items-center gap-8"
+        role="navigation"
+        aria-label="Hauptnavigation">
+        {
+          navItems.map(({ label, href }) => (
+            <NavLink {href} @click="isOpen = false">
+              {label}
+            </NavLink>
+          ))
+        }
+        <a
+          href="mailto:kontakt@sprach-eck.at?subject=Anliegen%20und%20Kontaktaufnahmemöglichkeiten"
+          class={CTA_BUTTON_CLASSES}
+          rel="noopener">
+          Termin buchen
+        </a>
+      </nav>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div
+      id="mobile-menu"
+      x-show="isOpen"
+      x-transition:enter="transition ease-out duration-200"
+      x-transition:enter-start="opacity-0 -translate-y-4"
+      x-transition:enter-end="opacity-100 translate-y-0"
+      x-transition:leave="transition ease-in duration-150"
+      x-transition:leave-start="opacity-100 translate-y-0"
+      x-transition:leave-end="opacity-0 -translate-y-4"
+      class="md:hidden absolute inset-x-0 top-full bg-white border-b border-gray-100 py-4"
+      @keydown.escape="isOpen = false">
+      <nav 
+        class="px-4 space-y-3"
+        role="navigation"
+        aria-label="Mobile Navigation">
+        {
+          navItems.map(({ label, href }) => (
+            <NavLink {href} @click="isOpen = false" class="block py-1">
+              {label}
+            </NavLink>
+          ))
+        }
+        <a
+          href="mailto:kontakt@sprach-eck.at?subject=Anliegen%20und%20Kontaktaufnahmemöglichkeiten"
+          class={`${CTA_BUTTON_CLASSES} w-full`}
+          rel="noopener">
+          Termin buchen
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Optimierte Transitions */
+  .transition {
+    transition-property: transform, opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+  }
+</style>

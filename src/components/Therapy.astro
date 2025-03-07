@@ -1,0 +1,195 @@
+---
+import ServiceCard from './ui/ServiceCard.astro';
+
+// Bildimport
+import spracheBild from '../../public/images/sprache.webp';
+import sprechenBild from '../../public/images/sprechen.webp';
+import kommunikationBild from '../../public/images/kommunikation.webp';
+
+// Typsichere Service-Definition
+interface Service {
+  title: string;
+  description: string;
+  image: ImageMetadata;
+  href: string;
+}
+
+// Services in einer konstanten für bessere Wartbarkeit
+const services: Service[] = [
+  {
+    title: 'Sprache',
+    description: 'Von ersten Wörtern bis zum aktiven Sprachgebrauch – ich begleite Ihr Kind individuell bei der Entwicklung seiner Sprachkompetenz.',
+    image: spracheBild,
+    href: '/leistungen/'
+  },
+  {
+    title: 'Sprechen',
+    description: 'Klare Aussprache schafft Selbstvertrauen. Mit spielerischen Übungen unterstütze ich Ihr Kind bei der korrekten Artikulation.',
+    image: sprechenBild,
+    href: '/leistungen/'
+  },
+  {
+    title: 'Kommunikation',
+    description: 'Ob nonverbal oder verbal - gemeinsam finden wir den Weg zu Kommunikation und Sprache. Dabei steht die Freude am Lernen immer im Mittelpunkt.',
+    image: kommunikationBild,
+    href: '/leistungen/'
+  }
+] as const;
+
+// Layout Konstanten
+const SECTION_SPACING = "py-16 md:py-24 bg-white";
+const ANIMATION_CLASSES = "transition-all duration-700 ease-out";
+const getDelay = (index: number) => `${index * 200}ms`;
+---
+
+<section 
+  id="therapy" 
+  class={SECTION_SPACING}
+  aria-labelledby="therapy-title"
+  x-data="{ 
+    isVisible: false,
+    init() {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              this.isVisible = true;
+              // Beobachtung beenden nach Sichtbarkeit
+              observer.disconnect();
+            }
+          });
+        },
+        { 
+          threshold: 0.2,
+          rootMargin: '50px',
+          // Performance-Optimierung für Mobile
+          delay: window.innerWidth < 768 ? 100 : 0
+        }
+      );
+
+      observer.observe(this.$refs.services);
+    }
+  }">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <h2 
+        id="therapy-title"
+        class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+        Therapeutische Schwerpunkte
+      </h2>
+      <p class="text-lg text-dark/70 leading-relaxed">
+        Durch Praxiserfahrung und Einfühlungsvermögen ist die Therapie individuell auf die Bedürfnisse und Anliegen meiner kleinen und großen Patient:innen abgestimmt.
+      </p>
+    </div>
+
+    <!-- Service Cards Grid -->
+    <div 
+      x-ref="services"
+      class="grid md:grid-cols-3 gap-6 md:gap-8 mb-24"
+      role="list"
+      aria-label="Therapeutische Leistungen">
+      {services.map((service, index) => (
+        <div 
+          role="listitem"
+          class:list={[
+            ANIMATION_CLASSES,
+            "focus-within:ring-2 focus-within:ring-primary/20 rounded-xl"
+          ]}
+          x-bind:class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'"
+          style={`transition-delay: ${getDelay(index)}`}
+        >
+          <ServiceCard 
+            {...service} 
+            imageProps={{
+              width: 772,
+              height: 515,
+              priority: index === 0
+            }}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Optimierte Animation Performance */
+  .transition-all {
+    will-change: transform, opacity;
+  }
+
+  /* Reduzierte Animation für Benutzer, die dies bevorzugen */
+  @media (prefers-reduced-motion: reduce) {
+    .transition-all {
+      transition: none;
+      transform: none !important;
+    }
+  }
+
+  /* Print Optimierungen */
+  @media print {
+    .transition-all {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  .floating-shape {
+    @apply absolute opacity-10 cursor-pointer pointer-events-auto;
+    background: theme('colors.primary');
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-5px, 5px) rotate(-5deg); }
+    75% { transform: translate(5px, -5px) rotate(5deg); }
+  }
+
+  .hover\:shake:hover {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  .shape-1 {
+    width: 150px;
+    height: 150px;
+    border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+    left: 5%;
+    top: 15%;
+    animation: float 14s ease-in-out infinite;
+  }
+
+  .shape-2 {
+    width: 100px;
+    height: 100px;
+    border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+    right: 10%;
+    top: 20%;
+    animation: float 12s ease-in-out infinite reverse;
+  }
+
+  .shape-3 {
+    width: 75px;
+    height: 75px;
+    border-radius: 49% 51% 48% 52% / 57% 44% 56% 43%;
+    left: 15%;
+    bottom: 20%;
+    animation: float 16s ease-in-out infinite;
+  }
+
+  .shape-4 {
+    width: 125px;
+    height: 125px;
+    border-radius: 53% 47% 59% 41% / 47% 53% 47% 53%;
+    right: 15%;
+    bottom: 15%;
+    animation: float 18s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(30px, -30px) rotate(120deg); }
+    66% { transform: translate(-20px, 20px) rotate(240deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+  }
+</style>

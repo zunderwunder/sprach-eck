@@ -1,0 +1,153 @@
+---
+import '../styles/fonts.css';
+import { ViewTransitions } from "astro:transitions";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Professionelle Logopädie in Baden. Individuelle Sprachtherapie für Kinder und Erwachsene mit Expertise und Herz.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/images/sprach-eck-logo.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title} | Sprach Eck | Logopädie Baden</title>
+    <ViewTransitions />
+
+    <!-- Preload der Fonts -->
+    <link rel="preload" as="font" href="/fonts/nunito-light.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="/fonts/poppins-semibold.woff2" type="font/woff2" crossorigin>
+
+    <!-- Alpine Plugins -->
+    <script>
+      import Alpine from 'alpinejs';
+      import intersect from '@alpinejs/intersect';
+      
+      // Registriere Plugins
+      Alpine.plugin(intersect);
+      
+      // Mache Alpine global verfügbar
+      window.Alpine = Alpine;
+      
+      // Starte Alpine
+      document.addEventListener('astro:page-load', () => {
+        Alpine.start();
+      });
+    </script>
+
+    <style is:global>
+      /* Schriftarten-Definition */
+      @font-face {
+        font-family: "Poppins";
+        src: url("/fonts/poppins-semibold-webfont.woff2") format("woff2");
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Avenir Light";
+        src: url("/fonts/avenir-light-webfont.woff2") format("woff2");
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      /* Alpine.js Utilities */
+      .js .js-hidden {
+        display: none;
+      }
+
+      [x-cloak] {
+        display: none !important;
+      }
+
+      /* Transitions */
+      .transition {
+        transition-property: opacity;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .duration-300 {
+        transition-duration: 300ms;
+      }
+
+      .transition-all {
+        transition: all 0.3s ease-out;
+        will-change: transform, opacity;
+      }
+
+      /* Reduced Motion */
+      @media (prefers-reduced-motion: reduce) {
+        .transition-all {
+          transition: none;
+          transform: none !important;
+        }
+      }
+
+      /* Animationen */
+      @keyframes float-slow {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      @keyframes float-medium {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+      }
+
+      @keyframes float-fast {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+      }
+
+      .animate-float-slow {
+        animation: float-slow 4s ease-in-out infinite;
+      }
+
+      .animate-float-medium {
+        animation: float-medium 3s ease-in-out infinite;
+      }
+
+      .animate-float-fast {
+        animation: float-fast 2s ease-in-out infinite;
+      }
+
+      .floating-shape {
+        @apply absolute opacity-10;
+        background: theme('colors.primary');
+      }
+
+      /* Grundlegende Styles */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        @apply font-secondary;
+      }
+    </style>
+
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

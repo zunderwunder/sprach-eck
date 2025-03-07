@@ -1,0 +1,86 @@
+---
+import PrimaryButton from './ui/PrimaryButton.astro';
+import Icon from './ui/Icon.astro';
+
+const features = [
+  'Ausführliche Befunderhebung',
+  'Individuelle Betreuung',
+  'Angepasstes Therapiematerial',
+  'Beratungsgespräch'
+];
+
+const infoSections = [
+  {
+    title: 'Verordnung und Bewilligung',
+    description: 'Bitte bringen Sie eine ärztliche Verordnung Ihrer/Ihres Haus-, Zahn- oder HNO-Ärzt:in zum ersten Termin mit. Erforderlich ist: „10x logopädische Therapie à 60 min". Eine chefärztliche Bewilligung ist ebenfalls notwendig.'
+  },
+  {
+    title: 'Termine und Absagen',
+    description: 'Ich biete wöchentliche Termine an. Falls Sie einmal absagen müssen, bitte ich Sie, dies mindestens 24 Stunden im Voraus zu tun. Andernfalls wird der Termin privat in Rechnung gestellt.'
+  },
+  {
+    title: 'Kosten und Verrechnung',
+    description: 'Als Wahllogopädin ohne Kassenvertrag erfolgt die Bezahlung direkt nach der Einheit (bar oder per Karte). Sie erhalten Ihre Rechnung bequem per E-Mail. Etwa 50% der Kosten können Sie bei Ihrer Krankenkasse zur Rückerstattung einreichen.'
+  }
+];
+---
+
+<section id="costs" class="py-16 md:py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+        Therapiekosten & Rahmenbedingungen
+      </h2>
+      <p class="text-lg text-dark/70">
+        Damit der Start in die Therapie so angenehm und reibungslos wie möglich verläuft, sind hier alle wichtigen Informationen für Ihre Behandlung zusammengestellt.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-12 items-start">
+      <!-- Pricing Card -->
+      <div class="bg-white rounded-2xl border border-primary/10 p-8 shadow-lg shadow-primary/5 transition-all duration-300 hover:-translate-y-2">
+        <div class="mb-8">
+          <h3 class="text-2xl font-semibold font-primary text-dark mb-2">Therapiekosten</h3>
+          <div class="flex items-center gap-2">
+            <span class="text-4xl font-bold text-primary">95 €</span>
+            <span class="text-dark/60">/Einheit</span>
+          </div>
+        </div>
+
+        <ul class="space-y-4">
+          {features.map(feature => (
+            <li class="flex items-center gap-3 text-dark/80">
+              <Icon name="check" class="w-5 h-5 text-primary flex-shrink-0" />
+              <span>{feature}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Info Sections -->
+      <div class="space-y-8">
+        {infoSections.map(section => (
+          <div class="space-y-2">
+            <h3 class="text-lg font-semibold font-primary text-dark">
+              {section.title}
+            </h3>
+            <p class="text-dark/70 leading-relaxed">
+              {section.description}
+            </p>
+          </div>
+        ))}
+
+        <p class="text-sm text-dark/60 italic">
+          Für Hausbesuche fällt eine zusätzliche Pauschale an.
+        </p>
+      </div>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="text-center mt-12">
+      <PrimaryButton href="/ablauf-und-kosten">
+        Alle Details zu Ablauf & Kosten
+      </PrimaryButton>
+    </div>
+  </div>
+</section>

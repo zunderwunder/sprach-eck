@@ -1,0 +1,125 @@
+---
+import { Image } from 'astro:assets';
+
+interface OfficeImage {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+const officeImages: OfficeImage[] = [
+  {
+    src: '/images/Praxis-01.webp',
+    alt: 'Praxis von außen - Eingangsbereich der logopädischen Praxis',
+    width: 800,
+    height: 800
+  },
+  {
+    src: '/images/Praxis-02.webp',
+    alt: 'Praxis Straßenansicht - Gebäudeansicht mit Umgebung',
+    width: 800,
+    height: 800
+  },
+  {
+    src: '/images/Praxis-03.webp',
+    alt: 'Therapieraum - Kind beim therapeutischen Spielen',
+    width: 800,
+    height: 800
+  },
+  {
+    src: '/images/Praxis-04.webp',
+    alt: 'Therapiematerialien - Buchstaben und Lernspiele',
+    width: 800,
+    height: 800
+  }
+];
+---
+
+<section 
+  class="max-w-4xl mx-auto px-4 py-12"
+  aria-label="Praxisimpressionen"
+  x-data="{ 
+    setupIntersectionObserver() {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('show');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2, rootMargin: '50px' }
+      );
+
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        observer.observe(item);
+      });
+    }
+  }"
+  x-init="setupIntersectionObserver"
+>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+    {officeImages.map((image, index) => (
+      <div 
+        class="gallery-item opacity-0 transform translate-y-4 transition-all duration-700 ease-out overflow-hidden rounded-lg bg-gray-50 aspect-square"
+        style={`transition-delay: ${index * 150}ms`}
+      >
+        <Image
+          src={image.src}
+          alt={image.alt}
+          width={600}
+          height={600}
+          loading="lazy"
+          fetchpriority={index === 0 ? "high" : "auto"}
+          decoding="async"
+          format="webp"
+          quality={85}
+          class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-out"
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 45vw"
+        />
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .gallery-item {
+    will-change: transform, opacity;
+    contain: layout style paint;
+    backface-visibility: hidden;
+  }
+
+  .gallery-item.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-item {
+      transition: none;
+      transform: none;
+    }
+    
+    .gallery-item img {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .gallery-item:not(:first-child) {
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 400px;
+    }
+  }
+</style>
+
+<script>
+  // Defer intersection observer setup
+  document.addEventListener('DOMContentLoaded', () => {
+    requestIdleCallback(() => {
+      // Your existing intersection observer code
+    });
+  });
+</script>

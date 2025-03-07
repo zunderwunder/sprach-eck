@@ -1,0 +1,179 @@
+---
+import FloatingShapes from './FloatingShapes.astro';
+
+const exercises = [
+ {
+   step: 1,
+   title: "Vorbereitung & Einstimmung",
+   text: "🏁 Gemeinsam starten",
+   instruction: "Macht es euch bequem und lockert euch etwas auf.",
+   duration: "1 Minute", 
+   tip: "Macht das Üben zu einem besonderen Moment - vielleicht mit einem kleinen Ritual zu Beginn?"
+ },
+ {
+   step: 2,
+   title: "Mundgymnastik",
+   text: "👅 Grimassen-Safari",
+   instruction: "Spielt Safari: Reißt den Mund auf wie ein Löwe, macht Affenlippen, lasst die Lippen flattern wie ein Zebra (brumm) und kreist mit der Zunge wie eine Giraffe.",
+   duration: "2-3 Minuten",
+   tip: "Macht die Bewegungen im Spiegel gemeinsam - das macht mehr Spaß!"
+ },
+ {
+   step: 3,
+   title: "Pustespiele",
+   text: "🎈 Windmacher",
+   instruction: "Pustet gemeinsam: erst sanft wie ein Schmetterling, dann stark wie ein Sturm. Verwendet einen Wattebausch, eine Papierkügelchen oder eine Feder zum Pusten.",
+   duration: "2-3 Minuten",
+   tip: "Variiert die Intensität: von ganz leicht bis richtig stark."
+ },
+ {
+   step: 4,
+   title: "Tiergeräusche & Laute",
+   text: "🐍 Zoo-Parade",
+   instruction: "Macht die Tierlaute nach: Die Schlange zischt 's-s-s', der Drache faucht 'ch-ch-ch' und das Huhn gackert 'g-g-g'. Erst leise, dann lauter.",
+   duration: "2-3 Minuten",
+   tip: "Verwandelt euch in die Tiere - mit Bewegungen macht es noch mehr Spaß!"
+ },
+ {
+   step: 5,
+   title: "Silbenspiel",
+   text: "👏 Klatsch mit!",
+   instruction: "Klatscht Lieblingswörter in Silben: 'Scho-ko-la-de', 'Eis-bär', 'But-ter-blu-me'",
+   duration: "2-3 Minuten",
+   tip: "Lasst euch eigene Wörter einfallen."
+ },
+ {
+   step: 6,
+   title: "Entspannung & Abschluss",
+   text: "🌟 Toll gemacht!",
+   instruction: "Lobt euch zusammen für eure tolle Mitarbeit!",
+   duration: "1 Minute",
+   tip: "Welche Übung hat am meisten Spaß gemacht?"
+ }
+] as const;
+---
+
+<section id="sprachuebung" class="py-16 md:py-24 relative overflow-hidden">
+  <div class="absolute inset-0 z-0 bg-primary/5">
+    <FloatingShapes />
+  </div>
+
+  <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16 relative z-10">
+    <h2 
+      id="speech-exercises-title"
+      class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+      Sprachübung gefällig?
+    </h2>
+    <p class="text-lg text-dark/70 leading-relaxed font-secondary">
+      Ein kleiner Vorgeschmack auf eine spielerische Übung, die wir gemeinsam in der Therapie machen könnten.
+    </p>
+  </div>
+
+  <div
+    class="speech-exercise-container max-w-2xl mx-auto p-6 bg-white rounded-3xl shadow-lg relative z-10"
+    x-data=`{
+      currentStep: 0,
+      exerciseCompleted: false,
+      exercises: ${JSON.stringify(exercises)},
+      totalSteps: ${exercises.length}
+    }`
+    x-cloak
+  >
+    <div class="relative max-w-3xl mx-auto px-6 mb-16">
+      <div class="relative mb-12">
+        {/* Durchgehender grauer Balken */}
+        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[2px] bg-gray-200"></div>
+
+        {/* Oranger Fortschrittsbalken */}
+        <div
+          class="absolute left-0 top-1/2 -translate-y-1/2 h-[2px] bg-accent transition-all duration-500 z-10"
+          :style="{ width: `calc(100% / ${totalSteps - 1} * ${currentStep})` }"
+        ></div>
+
+        {/* Nummerierte Kreise */}
+        <div class="flex justify-between relative z-10">
+          {exercises.map((_, i) => (
+            <div class="relative flex items-center">
+              <div
+                class="w-10 h-10 rounded-xl flex items-center justify-center border-2 text-lg transition-all duration-300 bg-white"
+                x-bind:class="{
+                  'border-accent text-accent': i <= currentStep || i === 0,
+                  'border-gray-200 text-gray-400': i > currentStep && i !== 0
+                }"
+              >
+                {i + 1}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="text-center space-y-8">
+        <div class="bg-primary/5 text-primary px-6 py-2 rounded-full inline-flex items-center space-x-2 mb-4 font-secondary">
+          <span class="text-base">Schritt</span>
+          <span class="font-bold text-lg" x-text="exercises[currentStep].step"></span>
+          <span class="text-base">von</span>
+          <span class="font-bold text-lg" x-text="totalSteps"></span>
+        </div>
+
+        <h3 class="text-lg md:text-xl font-primary font-semibold text-dark" x-text="exercises[currentStep].title"></h3>
+        <div class="text-xl md:text-2xl font-primary font-bold text-primary" x-text="exercises[currentStep].text"></div>
+        <div class="text-lg font-secondary text-dark/70 max-w-2xl mx-auto" x-text="exercises[currentStep].instruction"></div>
+        <div class="text-base font-secondary text-dark/50">
+          Dauer: <span class="font-medium" x-text="exercises[currentStep].duration"></span>
+        </div>
+
+        <div class="bg-gray-50 p-6 rounded-xl mt-8">
+          <p class="text-base font-secondary text-primary">
+            <span class="font-semibold">💡 Tipp:</span> 
+            <span x-text="exercises[currentStep].tip"></span>
+          </p>
+        </div>
+
+        <div class="flex justify-between items-center mt-12">
+          <button
+            x-show="currentStep > 0"
+            @click="currentStep = currentStep - 1"
+            class="text-primary hover:text-primary/80 text-base font-primary transition-colors duration-300"
+          >
+            ← Zurück
+          </button>
+          <div x-show="currentStep === 0" class="opacity-0">Platzhalter</div>
+          
+          <button
+            x-show="currentStep < totalSteps - 1"
+            @click="currentStep = currentStep + 1"
+            class="bg-primary text-white px-8 py-4 rounded-xl hover:bg-primary/90 transition-colors text-base font-primary font-medium"
+          >
+            Weiter →
+          </button>
+          
+          <template x-if="currentStep === totalSteps - 1">
+            <div class="flex gap-4">
+              <button
+                x-show="!exerciseCompleted"
+                @click="exerciseCompleted = true; confetti({
+                  particleCount: 100,
+                  spread: 70,
+                  origin: { y: 0.6 }
+                })"
+                class="bg-primary text-white px-8 py-4 rounded-xl hover:bg-primary/90 transition-colors text-base font-primary font-medium"
+              >
+                Übung beenden
+              </button>
+              <button
+                x-show="exerciseCompleted"
+                @click="currentStep = 0; exerciseCompleted = false"
+                class="bg-primary text-white px-8 py-4 rounded-xl hover:bg-primary/90 transition-colors text-base font-primary font-medium"
+              >
+                Neu starten
+              </button>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>

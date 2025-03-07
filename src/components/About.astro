@@ -1,0 +1,197 @@
+---
+import FeatureCard from './ui/FeatureCard.astro';
+
+// Typsichere Feature-Definition
+interface Feature {
+  title: string;
+  description: string;
+  icon: 'sprout' | 'circle' | 'heart';
+}
+
+// Features in einer konstanten für bessere Wartbarkeit
+const features: Feature[] = [
+  {
+    title: 'Fokus auf frühe Sprachentwicklung',
+    description: 'Frühzeitige Förderung für optimale Entwicklungschancen.',
+    icon: 'sprout'
+  },
+  {
+    title: 'Spezialisierung Mutismus, Stottern & Autismus',
+    description: 'Expertise in der Begleitung von Kindern mit Stottern, Mutismus und ASS.',
+    icon: 'circle'
+  },
+  {
+    title: 'Ganzheitlicher Therapieansatz',
+    description: 'Behandlung unter Berücksichtigung aller Lebensbereiche.',
+    icon: 'heart'
+  }
+] as const;
+
+// Layout Konstanten für konsistente Abstände
+const SECTION_SPACING = "py-16 md:py-20";
+const GRID_LAYOUT = "grid grid-cols-1 md:grid-cols-[400px_1fr] gap-8 lg:gap-12 items-start";
+
+// Konstanten für Animation
+const ANIMATION_CLASSES = "transition-all duration-700 ease-out";
+const VISIBLE_CLASSES = "opacity-100 translate-y-0";
+const HIDDEN_CLASSES = "opacity-0 translate-y-12";
+
+// Berechne Verzögerung für Feature-Cards
+const getDelay = (index: number) => `${200 + (index * 100)}ms`;
+---
+
+<section 
+  id="about" 
+  class:list={[SECTION_SPACING, "bg-white relative"]}
+  aria-labelledby="about-title">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div 
+      class={GRID_LAYOUT}
+      x-ref="content"
+      x-cloak
+      x-data="{ 
+        isVisible: false,
+        VISIBLE_CLASSES: 'opacity-100 translate-y-0',
+        HIDDEN_CLASSES: 'opacity-0 translate-y-12',
+        init() {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  this.isVisible = true;
+                  observer.disconnect();
+                }
+              });
+            },
+            { 
+              threshold: 0.2, 
+              rootMargin: '50px',
+              delay: window.innerWidth < 768 ? 100 : 0 
+            }
+          );
+          observer.observe(this.$refs.content);
+        }
+      }">
+      
+      <!-- Bild-Spalte mit Sticky-Scroll -->
+      <div 
+        class:list={[
+          "relative w-full max-w-sm md:max-w-none mx-auto md:sticky md:top-24",
+          ANIMATION_CLASSES
+        ]}
+        x-bind:class="isVisible ? VISIBLE_CLASSES : HIDDEN_CLASSES"
+      >
+        <div class="relative rounded-2xl overflow-hidden">
+          <img
+            src="/images/viki-portrait.webp"
+            alt="Portrait von Viktoria Praschl, Logopädin im Sprach Eck"
+            class="w-full aspect-[2/3] object-cover object-center"
+            width="400"
+            height="600"
+            loading="lazy"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+
+      <!-- Content-Spalte -->
+      <div 
+        class:list={[
+          "space-y-8 flex flex-col py-2",
+          ANIMATION_CLASSES
+        ]}
+        x-bind:class="isVisible ? VISIBLE_CLASSES : HIDDEN_CLASSES"
+        style="transition-delay: 200ms"
+      >
+        <div class="space-y-4">
+          <h2 
+            id="about-title"
+            class="text-3xl md:text-4xl font-bold font-primary text-dark">
+            Willkommen im Sprach Eck!
+          </h2>
+          <p class="text-lg text-dark/70 leading-relaxed max-w-prose">
+            Ich bin Viki! In meiner logopädischen Praxis verbinde ich fachliche Expertise mit einem herzlichen, individuellen Ansatz. 
+            Ich glaube daran, dass alle ihren eigenen Weg zur Sprache finden - und begleite Familien und Angehörige dabei, diesen Weg mit Vertrauen und Freude zu gehen.
+          </p>
+        </div>
+
+        <!-- Feature Cards mit semantischer Liste -->
+        <div 
+          class="grid gap-6"
+          role="list"
+          aria-label="Besonderheiten der Praxis">
+          {features.map((feature) => (
+            <div 
+              role="listitem"
+              class="focus-within:ring-2 focus-within:ring-primary/20 rounded-xl"
+            >
+              <FeatureCard {...feature} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Animationen */
+  @keyframes cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .animate-cursor {
+    animation: cursor 0.8s steps(2) infinite;
+    will-change: opacity;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes gentleVibrate {
+    0%, 100% { transform: rotate(0deg) scale(1.05); }
+    25% { transform: rotate(-1deg) scale(1.05); }
+    75% { transform: rotate(1deg) scale(1.05); }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-5px, 5px) rotate(-5deg); }
+    75% { transform: translate(5px, -5px) rotate(5deg); }
+  }
+
+  .shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  .transition-all {
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .transition-all {
+      transition: none;
+      transform: none;
+    }
+  }
+
+  /* Optimierte Print-Styles */
+  @media print {
+    .md\:sticky {
+      position: static;
+    }
+    
+    .transition-all {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>

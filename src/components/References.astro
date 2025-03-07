@@ -1,0 +1,144 @@
+---
+import FloatingShapes from './FloatingShapes.astro';
+
+interface Reference {
+  content: string;
+  author: string;
+  age: number;
+  year?: string;
+}
+
+const references: Reference[] = [
+  {
+    content: "Viki ist eine der besten Logopädinnen, die man sich nur vorstellen kann! Sie ist so einfühlsam, kann mit Kindern sehr gut umgehen. Meine Tochter geht sehr gerne zu ihr hin! Sie zeigt viel Verständnis und hat auch sehr viel Geduld. Wir sind froh, solch eine Logopädin gefunden zu haben!",
+    author: "Luiza",
+    age: 5
+  },
+  {
+    content: "Mein Sohn hat damals weniger als 50 Wörter gesprochen, hat auch kaum mit Fremden oder im Kindergarten gesprochen. Viki ist eine sehr kompetente, sympathische und liebe Logopädin, sie geht auf David ein und interessiert sich für ihn. Sie hat ihn auf spielerische Art und Weise dazu gebracht, vollständige Sätze zu sprechen.",
+    author: "David",
+    age: 6
+  },
+  {
+    content: "Viki ist eine sehr kompetente Logopädin. Durch ihre offene und herzliche Art fühlte sich meine Tochter vom ersten Moment an sehr wohl bei ihr. Aber auch als Mutter wurde ich durch ihr positives Wesen und ihrem Einfühlungsvermögen auch bei hartnäckigen Problemen sehr ermutigt. Sie hat den Prozess der Therapie und den Zweck der einzelnen Übungen immer verständlich erklärt.",
+    author: "Veronika",
+    age: 9
+  }
+] as const;
+---
+
+<section 
+  id="references" 
+  class="py-16 md:py-24 relative overflow-hidden"
+  aria-labelledby="references-title"
+>
+  <div class="absolute inset-0 z-0 bg-primary/5">
+    <FloatingShapes />
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <h2 
+        id="references-title"
+        class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+        Das sagen Eltern über unsere Zusammenarbeit
+      </h2>
+      <p class="text-lg text-dark/70 leading-relaxed">
+        Erfahrungen und Eindrücke von Eltern und Kindern, die ich auf ihrem Weg begleiten durfte.
+      </p>
+    </div>
+
+    <div class="grid gap-6 md:gap-8 max-w-5xl mx-auto">
+      {references.map((reference, index) => (
+        <div 
+          class="group p-6 rounded-xl bg-white border border-primary/10 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 relative z-10"
+          data-reference
+          x-data="{ show: false }"
+          x-intersect="show = true"
+          x-bind:class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+        >
+          <blockquote class="space-y-4">
+            <p class="text-dark/70 leading-relaxed text-lg relative px-6">
+              <span class="absolute left-0 top-0 text-4xl text-primary/20">"</span>
+              {reference.content}
+              <span class="absolute -bottom-4 right-0 text-4xl text-primary/20">"</span>
+            </p>
+            <footer class="flex items-center gap-2 text-sm pt-3 px-6">
+              <cite class="text-lg font-semibold font-primary text-dark group-hover:text-primary transition-colors duration-300 not-italic">
+                {reference.author}, {reference.age} Jahre
+              </cite>
+              {reference.year && (
+                <span class="text-dark/40">
+                  seit {reference.year}
+                </span>
+              )}
+            </footer>
+          </blockquote>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  [data-reference] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity, box-shadow;
+  }
+
+  [data-reference].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reference] {
+      transition: none;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  let observer: IntersectionObserver;
+  
+  const setupReferencesAnimation = () => {
+    if (observer) {
+      observer.disconnect();
+    }
+
+    const items = document.querySelectorAll('[data-reference]');
+    
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const delay = parseInt(entry.target.getAttribute('data-index') || '0') * 150;
+            setTimeout(() => {
+              entry.target.classList.add('is-visible');
+            }, delay);
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '50px'
+      }
+    );
+
+    items.forEach((item, index) => {
+      item.setAttribute('data-index', index.toString());
+      observer.observe(item);
+    });
+  };
+
+  document.addEventListener('astro:page-load', setupReferencesAnimation);
+  
+  document.addEventListener('astro:before-swap', () => {
+    if (observer) {
+      observer.disconnect();
+    }
+  });
+</script>

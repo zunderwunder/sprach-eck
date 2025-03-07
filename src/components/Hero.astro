@@ -1,0 +1,216 @@
+---
+import PrimaryButton from './ui/PrimaryButton.astro';
+import SecondaryButton from './ui/SecondaryButton.astro';
+import FloatingShapes from './FloatingShapes.astro';
+---
+
+<section class="min-h-[calc(100vh-89px)] flex items-center relative overflow-hidden">
+  <div class="absolute inset-0 z-0 bg-primary/5">
+    <FloatingShapes />
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+    <div class="max-w-3xl mx-auto text-center space-y-8">
+      <div class="space-y-0">
+        <div class="text-4xl md:text-5xl lg:text-6xl font-black text-dark font-primary leading-[1.1]">
+          <div class="mb-2 relative inline-block">
+            <span>Logopädie heißt</span>
+          </div>
+          <div class="text-primary min-h-[1.1em] flex items-center justify-center relative">
+            <span id="typewriter" class="flex items-center justify-center"></span>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-lg md:text-xl text-dark/70 leading-relaxed">
+        Als Wahllogopädin in Baden begleite ich Kinder, Jugendliche und Erwachsene auf ihrem individuellen Weg zur sprachlichen und kommunikativen Entfaltung – mit Expertise, Herz und einer Prise Spielfreude.
+      </p>
+
+      <div class="flex flex-wrap gap-4 justify-center">
+        <PrimaryButton href="mailto:kontakt@sprach-eck.at?subject=Anliegen%20und%20Kontaktaufnahmemöglichkeiten">
+          Termin vereinbaren
+        </PrimaryButton>
+        <SecondaryButton 
+          href="#sprachuebung"
+          @click="$event.preventDefault(); document.querySelector('#sprachuebeung').scrollIntoView({ behavior: 'smooth', block: 'start' })">
+          Sprachübung ausprobieren
+        </SecondaryButton>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Deklariere window.typewriterInstance als globale Variable
+    declare global {
+      interface Window {
+        typewriterInstance: any;
+      }
+    }
+  
+    // TypeWriter Klasse
+    class TypeWriter {
+      element: HTMLElement;
+      words: string[];
+      currentIndex: number;
+      charIndex: number;
+      isDeleting: boolean;
+      options: any;
+      isActive: boolean;
+  
+      constructor(element: HTMLElement, words: string[], options = {}) {
+        this.element = element;
+        this.words = words;
+        this.currentIndex = 0;
+        this.charIndex = 0;
+        this.isDeleting = false;
+        this.options = {
+          typeSpeed: options.typeSpeed || 100,
+          deleteSpeed: options.deleteSpeed || 50,
+          pauseDuration: options.pauseDuration || 2000,
+          loop: options.loop !== undefined ? options.loop : true,
+        };
+        this.isActive = true;
+      }
+  
+      type() {
+        if (!this.isActive || !this.element) return;
+        
+        const currentWord = this.words[this.currentIndex];
+        const shouldDelete = this.charIndex === currentWord.length;
+  
+        if (shouldDelete && !this.isDeleting) {
+          this.isDeleting = true;
+          setTimeout(() => this.type(), this.options.pauseDuration);
+          return;
+        }
+  
+        if (this.isDeleting) {
+          const text = currentWord.substring(0, this.charIndex - 1);
+          this.updateText(text);
+          this.charIndex--;
+  
+          if (this.charIndex === 0) {
+            this.isDeleting = false;
+            this.currentIndex = (this.currentIndex + 1) % this.words.length;
+            if (!this.options.loop && this.currentIndex === 0) {
+              this.isActive = false;
+              return;
+            }
+          }
+          setTimeout(() => this.type(), this.options.deleteSpeed);
+        } else {
+          const text = currentWord.substring(0, this.charIndex + 1);
+          this.updateText(text);
+          this.charIndex++;
+          setTimeout(() => this.type(), this.options.typeSpeed);
+        }
+      }
+  
+      updateText(text: string) {
+        if (!this.element) return;
+        this.element.innerHTML = text
+          .split('')
+          .map((char, idx) => `<span class="${idx % 2 === 0 ? 'text-primary' : 'text-accent'}">${char}</span>`)
+          .join('');
+      }
+  
+      start() {
+        this.isActive = true;
+        this.type();
+      }
+  
+      stop() {
+        this.isActive = false;
+        if (this.element) {
+          this.element.innerHTML = '';
+        }
+      }
+    }
+  
+    function initTypeWriter() {
+      const element = document.getElementById('typewriter');
+      if (!element) return;
+  
+      const texts = ['Sprache', 'Verstehen', 'Begleiten', 'Vertrauen', 'Wachsen'];
+  
+      // Cleanup
+      if (window.typewriterInstance) {
+        window.typewriterInstance.stop();
+      }
+  
+      // Neue Instanz
+      window.typewriterInstance = new TypeWriter(element, texts, {
+        typeSpeed: 100,
+        deleteSpeed: 50,
+        pauseDuration: 2000,
+        loop: true
+      });
+  
+      window.typewriterInstance.start();
+    }
+  
+    // Event Listener
+    const initEvents = () => {
+      initTypeWriter();
+    };
+  
+    // Initial setup
+    document.addEventListener('DOMContentLoaded', initEvents);
+    document.addEventListener('astro:page-load', initEvents);
+    document.addEventListener('astro:after-swap', initEvents);
+  
+    // Cleanup
+    document.addEventListener('astro:before-preparation', () => {
+      if (window.typewriterInstance) {
+        window.typewriterInstance.stop();
+      }
+    });
+  </script>
+</section>
+
+<style>
+  /* Hero-spezifische Animationen */
+  @keyframes cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .animate-cursor {
+    animation: cursor 0.8s steps(2) infinite;
+    will-change: opacity;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes gentleVibrate {
+    0%, 100% { transform: rotate(0deg) scale(1.05); }
+    25% { transform: rotate(-1deg) scale(1.05); }
+    75% { transform: rotate(1deg) scale(1.05); }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-5px, 5px) rotate(-5deg); }
+    75% { transform: translate(5px, -5px) rotate(5deg); }
+  }
+
+  .shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+</style>

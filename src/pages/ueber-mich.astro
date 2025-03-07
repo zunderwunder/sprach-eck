@@ -1,0 +1,396 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FeatureCard from '../components/ui/FeatureCard.astro';
+import Icon from '../components/ui/Icon.astro';
+import PrimaryButton from '../components/ui/PrimaryButton.astro';
+
+const expertise = [
+  {
+    title: 'Kindersprache & Entwicklung',
+    description: 'Mein Herz schlägt für die frühe Sprachentwicklung. Mit viel Einfühlungsvermögen begleite ich Kinder auf ihrem individuellen Weg.',
+    icon: 'face-smile'
+  },
+  {
+    title: 'Ganzheitliche Familienbetreuung',
+    description: 'Durch meine Erfahrung in der Praxis Sprecherei und zahlreiche Fortbildungen biete ich eine umfassende therapeutische Betreuung.',
+    icon: 'heart'
+  },
+  {
+    title: 'Vorträge & Beratung',
+    description: 'Regelmäßige Infoabende und Vorträge im Kindergarten-Setting sowie am Biofeedback Kongress zeigen mein Engagement für Aufklärung.',
+    icon: 'graduation-cap'
+  }
+];
+
+const education = [
+  {
+    period: '2017 - 2020',
+    title: 'Bachelor-Studium Logopädie',
+    description: 'FH Wiener Neustadt'
+  },
+  {
+    period: '2020 - 2022',
+    title: 'Praxis Sprecherei',
+    description: 'Intensive Expertise-Entwicklung im Team und Spezialisierung auf Kindersprache'
+  },
+  {
+    period: 'seit März 2022',
+    title: 'Sprach Eck',
+    description: 'Eigene logopädische Praxis in Baden'
+  }
+];
+
+const milestones = [
+  {
+    title: 'Erste Schritte zur Logopädie',
+    description: 'Während meiner Schulzeit am humanistischen Gymnasium entdeckte ich durch 5-jährige Theatererfahrung meine Leidenschaft für Sprache. Als Rettungssanitäterin entwickelte ich zusätzlich großes medizinisches Interesse.',
+    year: '2013 - 2017'
+  },
+  {
+    title: 'Bachelor-Studium Logopädie',
+    description: 'Fundierte Ausbildung an der FH Wiener Neustadt mit Fokus auf evidenzbasierte Therapieansätze und praktische Erfahrung.',
+    year: '2017 - 2020'
+  },
+  {
+    title: 'Praxis Sprecherei',
+    description: 'Intensive Expertise-Entwicklung im Team, Spezialisierung auf Kindersprache und zahlreiche Fortbildungen in interaktioneller Therapie.',
+    year: '2020 - 2022'
+  },
+  {
+    title: 'Gründung Sprach Eck',
+    description: 'Start meiner eigenen logopädischen Praxis in Baden. Regelmäßige Vorträge und Infoabende für Eltern und Fachpersonal.',
+    year: 'seit März 2022'
+  }
+];
+
+const certifications = [
+  {
+    category: 'Interaktionelle Therapie',
+    items: [
+      {
+        date: 'November 2020',
+        title: 'Vorsprachliche und Frühe Pragmatische Entwicklung',
+        subtitle: 'Jahreskurs Nina Szammer "Interaktionelle Therapie bei Sprachentwicklungsstörungen"'
+      },
+      {
+        date: 'Jänner 2021',
+        title: 'Sprachverständnisstörungen',
+        subtitle: 'Jahreskurs Nina Szammer "Interaktionelle Therapie bei Sprachentwicklungsstörungen"'
+      },
+      {
+        date: 'März 2021',
+        title: 'Grammatische Störungen',
+        subtitle: 'Jahreskurs Nina Szammer "Interaktionelle Therapie bei Sprachentwicklungsstörungen"'
+      },
+      {
+        date: 'Juni 2021',
+        title: 'Wortschatzentwicklung',
+        subtitle: 'Jahreskurs Nina Szammer "Interaktionelle Therapie bei Sprachentwicklungsstörungen"'
+      },
+      {
+        date: 'September 2021',
+        title: 'Komplexe Sprachentwicklungsstörungen',
+        subtitle: 'Jahreskurs Nina Szammer "Interaktionelle Therapie bei Sprachentwicklungsstörungen"'
+      },
+      {
+        date: 'November 2021',
+        title: 'Bindungsorientierte Logopädische Therapie',
+        subtitle: 'Jahreskurs Nina Szammer "Interaktionelle Therapie bei Sprachentwicklungsstörungen"'
+      },
+      {
+        date: 'März 2022',
+        title: 'Supervision',
+        subtitle: 'Jahreskurs Nina Szammer "Interaktionelle Therapie bei Sprachentwicklungsstörungen"'
+      }
+    ]
+  },
+  {
+    category: 'Myofunktionelle Therapie',
+    items: [
+      {
+        date: 'November 2021',
+        title: 'Free the Tongue',
+        subtitle: 'Zungenband Online Seminar'
+      },
+      {
+        date: 'Februar 2022',
+        title: 'Einführung in die Diagnostik und Therapie des kurzen Zungenbandes bei Säuglingen und Babys',
+        subtitle: 'Seminar- und Fortbildungszentrum Rheine'
+      },
+      {
+        date: 'April 2022',
+        title: 'Myofunktionelle Therapie Seminar',
+        subtitle: 'mit Melanie Haslinger'
+      },
+      {
+        date: 'November 2022',
+        title: 'Ganzheitliche Myofunktionelle Therapie',
+        subtitle: 'Sabine Fuhlbrück'
+      }
+    ]
+  },
+  {
+    category: 'Autismus & Kommunikation',
+    items: [
+      {
+        date: 'Juni 2022',
+        title: 'Komm!ASS® Grundkurs',
+        subtitle: 'Ulrike Funke zur Interaktions- und Kommunikationsanbahnung bei Autismus Spektrum Störung'
+      },
+      {
+        date: 'April 2024',
+        title: 'Komm!ASS® Grundkurs',
+        subtitle: 'Ulrike Funke zur Interaktions- und Kommunikationsanbahnung bei Autismus Spektrum Störung'
+      },
+      {
+        date: 'April 2024',
+        title: 'Komm!ASS® Aufbaukurs',
+        subtitle: 'Ulrike Funke zur Interaktions- und Kommunikationsanbahnung bei Autismus Spektrum Störung'
+      }
+    ]
+  },
+  {
+    category: 'Weitere Spezialisierungen',
+    items: [
+      {
+        date: 'Jänner 2023',
+        title: '"Vom Schweigen zum mutig Sprechen"',
+        subtitle: 'Selektive Mutismus Therapie von Sabine Laerum'
+      },
+      {
+        date: 'April 2023',
+        title: 'NF!T® Neurofunktionstherapie Modul 1 Mund',
+        subtitle: 'von Elke Rogge'
+      },
+      {
+        date: 'September 2024',
+        title: 'Der Non-Avoidance Modifikationsansatz in der Therapie mit stotternden Kindern',
+        subtitle: 'von Susanne Gehrer'
+      }
+    ]
+  }
+];
+---
+
+<Layout 
+  title="Über mich | Sprach Eck | Logopädie Baden"
+  description="Victoria Wirth - Ihre Logopädin in Baden. Spezialisiert auf Kindersprache, Stottern und Autismus. Erfahren Sie mehr über meinen Weg und meine Expertise in der Sprachtherapie."
+>
+  <main class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <!-- Hero Section -->
+      <div class="text-center max-w-3xl mx-auto mb-32"
+        x-data="{ show: false, hover: false }"
+        x-intersect="show = true"
+        x-bind:class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'"
+        class="transition-all duration-1000">
+        <div class="relative inline-block mb-8"
+          @mouseenter="hover = true"
+          @mouseleave="hover = false">
+          <!-- Verspielte Sprechblase -->
+          <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-56 p-3 bg-primary/10 rounded-2xl text-sm text-primary font-medium opacity-0 transition-all duration-300"
+            x-bind:class="hover ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+            <div class="relative">
+              Wie ich zur Logopädie gefunden habe 🌟
+              <!-- Sprechblasen-Pfeil -->
+              <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+                <div class="border-8 border-transparent border-t-primary/10"></div>
+              </div>
+            </div>
+          </div>
+          <h1 class="text-4xl md:text-5xl font-bold font-primary text-dark">
+            Über mich
+          </h1>
+        </div>
+        <p class="text-lg text-dark/70 leading-relaxed">
+          Meine Begeisterung für Sprache entdeckte ich bereits während meiner Schulzeit am humanistischen Gymnasium. 
+          Heute begleite ich Kinder, Jugendliche und Erwachsene mit verschiedenen logopädischen Anliegen.
+        </p>
+      </div>
+
+      <!-- Expertise Cards mit gestaffeltem Fade-In -->
+      <div class="mt-24"
+        x-data="{ show: false }"
+        x-intersect="show = true">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+            Meine Schwerpunkte in der Logopädie
+          </h2>
+          <p class="text-lg text-dark/70 font-secondary">
+            Spezialisiert auf Kindersprachentwicklung und ganzheitliche Betreuung von Familien.
+          </p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          {expertise.map((item, index) => (
+            <div
+              x-data="{ show: false }"
+              x-intersect:enter="show = true"
+              x-bind:class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'"
+              class="transition-all duration-700"
+              style={`transition-delay: ${index * 200}ms`}>
+              <FeatureCard {...item} />
+            </div>
+          ))}
+        </div>
+        <div class="text-center mt-12">
+          <PrimaryButton href="/ablauf-und-kosten">
+            Erfahren Sie mehr zum Therapieablauf
+          </PrimaryButton>
+        </div>
+      </div>
+
+      <!-- Milestones Timeline Section -->
+<section class="py-16 md:py-24 bg-white"
+x-data="{ 
+  activeSteps: new Set(),
+  init() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const stepIndex = parseInt(entry.target.dataset.step);
+        if (entry.isIntersecting) {
+          this.activeSteps.add(stepIndex);
+        } else {
+          if (entry.boundingClientRect.top > 0) {
+            this.activeSteps.delete(stepIndex);
+          }
+        }
+      });
+    }, {
+      threshold: 0.5,
+      rootMargin: '-10% 0px -10% 0px'
+    });
+
+    document.querySelectorAll('[data-step]').forEach(step => {
+      observer.observe(step);
+    });
+  }
+}">
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
+  <div class="text-center max-w-3xl mx-auto mb-16">
+    <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+      Mein Weg zur Logopädie
+    </h2>
+    <p class="text-lg text-dark/70 font-secondary">
+      Eine Reise geprägt von Leidenschaft für Sprache, medizinischem Interesse und dem Wunsch, Menschen auf ihrem Weg zu begleiten.
+    </p>
+  </div>
+
+  <div class="relative max-w-3xl mx-auto">
+    <!-- Timeline Line -->
+    <div 
+      class="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-100"
+      style="contain: paint;">
+      <div 
+        class="absolute top-0 left-0 w-full bg-accent transition-all duration-1000 ease-in-out"
+        style="height: 0%;"
+        x-ref="progress"
+        x-effect="$refs.progress.style.height = (Math.max(...Array.from(activeSteps)) + 1) * 25 + '%'">
+      </div>
+    </div>
+
+    <!-- Timeline Steps -->
+    <div class="space-y-12">
+      {milestones.map((milestone, i) => (
+        <div 
+          class="relative pl-24 flex items-start transition-all duration-700 ease-out"
+          data-step={i}
+          x-bind:class={`activeSteps.has(${i}) ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'`}
+        >
+          <!-- Timeline Dot -->
+          <div 
+            class="absolute left-7 top-2.5 w-2 h-2 rounded-full border-2 transition-colors duration-700"
+            x-bind:class={`activeSteps.has(${i}) ? 'border-accent bg-accent' : 'border-gray-300 bg-white'`}>
+          </div>
+
+          <div class="flex-1 transition-all duration-700">
+            <div class="text-accent font-semibold mb-1">{milestone.year}</div>
+            <h3 class="text-xl font-semibold font-primary text-dark mb-2">
+              {milestone.title}
+            </h3>
+            <p class="text-dark/70 leading-relaxed font-secondary">
+              {milestone.description}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+</section>
+
+      <!-- Detailed Certifications Section -->
+      <div class="mt-24"
+        x-data="{ 
+          isVisible: false,
+          activeCategory: null,
+          toggle(category) {
+            this.activeCategory = this.activeCategory === category ? null : category;
+          }
+        }"
+        x-intersect:enter="isVisible = true">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+            Fortbildungen & Zertifizierungen
+          </h2>
+          <p class="text-lg text-dark/70 font-secondary">
+            Detaillierte Übersicht meiner fachlichen Weiterbildungen
+          </p>
+        </div>
+        
+        <div class="max-w-3xl mx-auto space-y-4">
+          {certifications.map((cert, categoryIndex) => (
+            <div class="border border-gray-100 rounded-lg overflow-hidden shadow-sm"
+              x-bind:class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+              style={`transition: all 0.5s ease-out ${categoryIndex * 100}ms`}>
+              <button
+                class="w-full px-6 py-4 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+                x-on:click={`toggle('${cert.category}')`}>
+                <h3 class="text-lg font-semibold text-dark">{cert.category}</h3>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  class="w-5 h-5 text-accent/70 transition-transform duration-300"
+                  x-bind:class={`activeCategory === '${cert.category}' ? 'rotate-180' : ''`}
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor">
+                  <path 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    stroke-width="2" 
+                    d="M19 9l-7 7-7-7" 
+                  />
+                </svg>
+              </button>
+              
+              <div
+                class="overflow-hidden transition-all duration-300"
+                x-show={`activeCategory === '${cert.category}'`}
+                x-collapse>
+                <div class="px-6 py-4 bg-gray-50 space-y-4">
+                  {cert.items.map((item) => (
+                    <div class="border-l-2 border-accent pl-4 py-2">
+                      <div class="text-accent font-medium text-sm">{item.date}</div>
+                      <div class="font-bold font-primary text-dark mt-1">{item.title}</div>
+                      {item.subtitle && (
+                        <div class="text-dark/70 text-sm mt-1">{item.subtitle}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Contact CTA Section -->
+      <div class="mt-24 text-center">
+        <PrimaryButton 
+          href="mailto:kontakt@sprach-eck.at?subject=Anliegen%20und%20Kontaktaufnahmemöglichkeiten" 
+          class="mx-auto">
+          <span>Schreiben Sie mir gerne</span>
+        </PrimaryButton>
+      </div>
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,348 @@
+---
+export const encoding = 'UTF-8';
+
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/ui/Icon.astro';
+import PrimaryButton from '../components/ui/PrimaryButton.astro';
+
+// Timeline Steps
+const timelineSteps = [
+  {
+    title: 'Kontaktaufnahme',
+    description: 'Der erste Schritt zu Ihrer logopädischen Betreuung.',
+    details: [
+      'Schnelle Antwort auf Ihre Anfrage',
+      'Erste Fragen und Anliegen besprechen',
+      'Flexible Terminoptionen'
+    ],
+    icon: 'phone'
+  },
+  {
+    title: 'Verordnung & Bewilligung',
+    description: 'Wichtige Unterlagen für den Start der Therapie.',
+    details: [
+      'Verordnung von Haus-, Zahn- oder HNO-Ärzt:in',
+      'Chefärztliche Bewilligung',
+      'Unterstützung beim Prozess'
+    ],
+    icon: 'document'
+  },
+  {
+    title: 'Erstgespräch & Diagnostik',
+    description: 'Ausführliche Bestandsaufnahme in vertrauensvoller Atmosphäre.',
+    details: [
+      'Individuelle Bedarfsanalyse',
+      'Spielerische Diagnostik bei Kindern',
+      'Therapieziele gemeinsam definieren'
+    ],
+    icon: 'chat'
+  },
+  {
+    title: 'Therapie & Begleitung',
+    description: 'Ihre individuelle therapeutische Betreuung.',
+    details: [
+      'Regelmäßige Therapieeinheiten',
+      'Übungen für zuhause',
+      'Fortschrittsberichte & Beratung'
+    ],
+    icon: 'heart'
+  }
+];
+
+// FAQ Items
+const faqItems = [
+  {
+    question: 'Wie läuft die Abrechnung?',
+    answer: 'Als Wahlpraxis verrechne ich die Tarife direkt. Nach Bezahlung erhalten Sie eine Rechnung per Mail für die Einreichung bei Ihrer Sozialversicherung. Etwa 50% der Kosten werden rückerstattet.'
+  },
+  {
+    question: 'Was ist bei Absagen zu beachten?',
+    answer: 'Bitte sagen Sie Termine mindestens 24 Stunden im Voraus ab. Bei kurzfristigeren Absagen muss die Einheit leider privat in Rechnung gestellt werden.'
+  },
+  {
+    question: 'Wie funktioniert die Rückerstattung?',
+    answer: 'Die Honorarnote können Sie bei Ihrer Sozialversicherung (ÖGK, BVAEB, SVS, KFA) einreichen. Bei Privatversicherungen ist je nach Tarif eine Kostendeckung bis zu 100% möglich.'
+  }
+];
+
+// Tarife
+const tariffs = [
+  {
+    code: 'T3 (LP03)',
+    duration: '60 min',
+    title: 'Logopädische Therapie',
+    description: 'Ausführliche Therapieeinheit mit umfassender Betreuung',
+    price: '95'
+  },
+  {
+    code: 'T2 (LP02)',
+    duration: '45 min',
+    title: 'Logopädische Therapie',
+    description: 'Kompakte Therapieeinheit für gezielte Übungen',
+    price: '75'
+  }
+];
+---
+
+<Layout 
+  title="Ablauf & Kosten | Sprach Eck | Logopädie Baden"
+  description="Transparente Informationen zu Therapieablauf und Kosten in der logopädischen Praxis in Baden. Erfahren Sie mehr über Erstgespräch, Verordnung und Kassenabrechnung."
+>
+  <main class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <!-- Hero Section -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="relative inline-block mb-8"
+          x-data="{ hover: false }"
+          @mouseenter="hover = true"
+          @mouseleave="hover = false">
+          <!-- Verspielte Sprechblase -->
+          <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-56 p-3 bg-primary/10 rounded-2xl text-sm text-primary font-medium opacity-0 transition-all duration-300"
+            x-bind:class="hover ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+            <div class="relative">
+              Wie wir zusammenarbeiten ☺️
+              <!-- Sprechblasen-Pfeil -->
+              <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+                <div class="border-8 border-transparent border-t-primary/10"></div>
+              </div>
+            </div>
+          </div>
+          <h1 class="text-4xl md:text-5xl font-bold font-primary text-dark">
+            Ablauf & Kosten
+          </h1>
+        </div>
+        <p class="text-lg text-dark/70 leading-relaxed">
+          In einem ausführlichen Erstgespräch nehme ich mir Zeit, alle Hintergrundinfos und Bedürfnisse einzuholen. 
+          Transparent und individuell begleite ich durch den gesamten Therapieprozess.
+        </p>
+      </div>
+
+      <!-- Timeline Section -->
+<section class="mb-32">
+  <div class="relative max-w-3xl mx-auto"
+    x-data="{ 
+      activeSteps: new Set(),
+      init() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const stepIndex = parseInt(entry.target.dataset.step);
+            if (entry.isIntersecting) {
+              this.activeSteps.add(stepIndex);
+            } else {
+              if (entry.boundingClientRect.top > 0) {
+                this.activeSteps.delete(stepIndex);
+              }
+            }
+          });
+        }, {
+          threshold: 0.5,
+          rootMargin: '-10% 0px -10% 0px'
+        });
+
+        document.querySelectorAll('[data-step]').forEach(step => {
+          observer.observe(step);
+        });
+      }
+    }">
+    <!-- Timeline Line -->
+    <div 
+      class="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-100"
+      style="contain: paint;">
+      <div 
+        class="absolute top-0 left-0 w-full bg-accent transition-all duration-1000 ease-in-out"
+        style="height: 0%;"
+        x-ref="progress"
+        x-effect="$refs.progress.style.height = (Math.max(...Array.from(activeSteps)) + 1) * 25 + '%'">
+      </div>
+    </div>
+
+    <!-- Timeline Steps -->
+    <div class="space-y-12">
+      {timelineSteps.map((step, i) => (
+        <div 
+          class="relative pl-24 flex items-start transition-all duration-700 ease-out"
+          data-step={i}
+          x-bind:class={`activeSteps.has(${i}) ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'`}
+        >
+          <!-- Timeline Dot -->
+          <div 
+            class="absolute left-7 top-2.5 w-2 h-2 rounded-full border-2 transition-colors duration-700"
+            x-bind:class={`activeSteps.has(${i}) ? 'border-accent bg-accent' : 'border-gray-300 bg-white'`}>
+          </div>
+
+          <div class="flex-1 transition-all duration-700">
+            <h3 class="text-xl font-semibold font-primary text-dark mb-2">
+              {step.title}
+            </h3>
+            <p class="text-dark/70 mb-4">{step.description}</p>
+            <ul class="space-y-2">
+              {step.details.map(detail => (
+                <li class="flex items-center gap-2 text-dark/70">
+                  <Icon name="check" class="w-4 h-4 text-primary flex-shrink-0" />
+                  <span>{detail}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+      <!-- Pricing Section -->
+<section class="mb-32">
+  <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+    <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+      Therapiekosten
+    </h2>
+    <p class="text-lg text-dark/70">
+      Als Wahlpraxis verrechne ich die Tarife direkt. Nach Bezahlung erhälten Sie eine Rechnung per Mail für die Einreichung bei Ihrer Sozialversicherung.
+    </p>
+  </div>
+
+  <div class="max-w-4xl mx-auto">
+    <div 
+      class="group bg-white rounded-xl p-8 border border-gray-100 shadow-lg shadow-primary/5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+      x-data="{ show: false }"
+      x-intersect="show = true"
+      x-bind:class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'">
+      <div class="flex justify-between items-start">
+        <div class="space-y-2">
+          <h3 class="text-xl font-bold font-primary text-dark group-hover:text-primary transition-colors duration-300">Logopädische Therapie</h3>
+          <p class="text-dark/70">Ausführliche Therapieeinheit mit umfassender Betreuung</p>
+          <p class="text-sm text-dark/60">
+            Etwa 50% der Kosten werden von der Krankenkasse rückerstattet.
+          </p>
+        </div>
+        <div class="text-right ml-4">
+          <span class="text-3xl font-bold text-dark group-hover:text-primary transition-colors duration-300">95€</span>
+          <span class="text-sm text-dark/60 block">pro Einheit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+      <!-- FAQ Section -->
+      <section class="mb-32">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+            Häufige Fragen
+          </h2>
+          <p class="text-lg text-dark/70">
+            Antworten auf die wichtigsten Fragen zu Kosten und Abrechnung.
+          </p>
+        </div>
+
+        <div class="max-w-3xl mx-auto space-y-4"
+          x-data="{ 
+            isVisible: false,
+            activeCategory: null,
+            toggle(category) {
+              this.activeCategory = this.activeCategory === category ? null : category;
+            }
+          }"
+          x-intersect:enter="isVisible = true">
+          {faqItems.map((item, index) => (
+            <div 
+              class="border border-gray-100 rounded-lg overflow-hidden shadow-sm"
+              x-data="{ open: false, show: false }"
+              x-bind:class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+              style={`transition: all 0.5s ease-out ${index * 100}ms`}>
+              <button
+                class="w-full px-6 py-4 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+                x-on:click={`toggle('${item.question}')`}>
+                <h3 class="text-lg font-semibold text-dark">{item.question}</h3>
+                <svg 
+                  class="w-5 h-5 text-accent/70 transition-transform duration-300"
+                  x-bind:class={`activeCategory === '${item.question}' ? 'rotate-180' : ''`}
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              <div
+                class="overflow-hidden transition-all duration-300"
+                x-show={`activeCategory === '${item.question}'`}
+                x-collapse>
+                <div class="px-6 py-4 bg-gray-50">
+                  <p class="text-dark/70">{item.answer}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold font-primary text-dark mb-4">
+          Bereit für den ersten Schritt?
+        </h2>
+        <p class="text-lg text-dark/70 mb-8">
+          Ich freue mich darauf, Sie und Ihre Familie kennenzulernen und individuell zu beraten.
+        </p>
+        <PrimaryButton 
+          href="mailto:kontakt@sprach-eck.at?subject=Anliegen%20und%20Kontaktaufnahmemöglichkeiten" 
+          class="mx-auto">
+          Vereinbaren Sie ein Erstgespräch
+        </PrimaryButton>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .transition-all {
+    transition: all 0.3s ease-out;
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .transition-all {
+      transition: none;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  const setupAnimations = () => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: '50px'
+      }
+    );
+
+    document.querySelectorAll('[data-animate]').forEach(el => {
+      observer.observe(el);
+    });
+  };
+
+  // Initial setup
+  setupAnimations();
+
+  // For Astro View Transitions
+  document.addEventListener('astro:page-load', setupAnimations);
+
+  // Cleanup
+  document.addEventListener('astro:before-swap', () => {
+    document.querySelectorAll('[data-animate]').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(5px)';
+    });
+  });
+</script>
