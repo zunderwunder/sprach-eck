@@ -3,8 +3,6 @@ interface Props {
   name: string;
   class?: string;
 }
-
 const { name, class: className } = Astro.props;
 ---
-
-<i class={`fa-solid fa-${name} ${className || ''}`}></i>
+<i class={`fa-solid fa-${name} ${className || ''}`} style="display: inline-flex; align-items: center; justify-content: center;"></i>
